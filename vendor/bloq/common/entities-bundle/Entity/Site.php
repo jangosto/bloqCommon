@@ -1,14 +1,10 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace Bloq\Common\EntitiesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="site")
- */
 class Site
 {
     /**
@@ -175,6 +171,11 @@ class Site
     public function addUser(User $user)
     {
         $this->users[] = $user;
+    }
+
+    public function removeUser(User $user)
+    {
+        $this->users->remove($user);
     }
 }
 
