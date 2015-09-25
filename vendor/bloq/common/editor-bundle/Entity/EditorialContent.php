@@ -63,6 +63,25 @@ class EditorialContent implements EditorialContentInterface
      */
     protected $status;
 
+    /**
+     * @ORM\Column(type="datetime")
+     * @var datetime
+     */
+    protected $createdDT;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @var datetime
+     */
+    protected $publishedDT;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @var datetime
+     */
+    protected $updatedDT;
+
+
     public function __construct()
     {
         $this->authors = array();
@@ -278,6 +297,66 @@ class EditorialContent implements EditorialContentInterface
     public function setStatus($status)
     {
         $this->status = $status;
+    }
+    
+    /**
+     * Get createdDT.
+     *
+     * @return createdDT.
+     */
+    public function getCreatedDT()
+    {
+        return $this->createdDT;
+    }
+    
+    /**
+     * Set createdDT.
+     *
+     * @param createdDT the value to set.
+     */
+    public function setCreatedDT($createdDT)
+    {
+        $this->createdDT = $createdDT;
+    }
+    
+    /**
+     * Get publishedDT.
+     *
+     * @return publishedDT.
+     */
+    public function getPublishedDT()
+    {
+        return $this->publishedDT;
+    }
+    
+    /**
+     * Set publishedDT.
+     *
+     * @param publishedDT the value to set.
+     */
+    public function setPublishedDT($publishedDT)
+    {
+        $this->publishedDT = $publishedDT;
+    }
+    
+    /**
+     * Get updatedDT.
+     *
+     * @return updatedDT.
+     */
+    public function getUpdatedDT()
+    {
+        return $this->updatedDT;
+    }
+    
+    /**
+     * Set updatedDT.
+     *
+     * @param updatedDT the value to set.
+     */
+    public function setUpdatedDT($updatedDT)
+    {
+        $this->updatedDT = $updatedDT;
     }
 }
 

@@ -18,13 +18,13 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", name="first_name")
      * @var string
      */
     protected $firstName;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", name="last_name")
      * @var string
      */
     protected $lastName;

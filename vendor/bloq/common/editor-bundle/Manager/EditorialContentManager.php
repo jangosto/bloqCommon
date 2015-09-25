@@ -1,8 +1,8 @@
 <?php
 
-namespace Bloq\Common\EntitiesBundle\Manager;
+namespace Bloq\Common\EditorBundle\Manager;
 
-class SiteManager
+class EditorialContentManager
 {
     protected $em;
     protected $repository;

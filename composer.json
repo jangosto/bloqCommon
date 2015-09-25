@@ -4,7 +4,11 @@
     "type": "project",
     "description": "The \"Symfony Standard Edition\" distribution",
     "autoload": {
-        "psr-4": { "Bloq\\Common\\EntitiesBundle\\": "vendor/bloq/common/entities-bundle" }
+        "psr-4": { 
+            "Bloq\\Common\\EntitiesBundle\\": "vendor/bloq/common/entities-bundle",
+            "Bloq\\Common\\EditorBundle\\": "vendor/bloq/common/editor-bundle",
+            "Bloq\\Doctrine\\MulticonnectBundle\\": "vendor/bloq/doctrine/multiconnect-bundle" 
+        }
     },
     "require": {
         "php": ">=5.3.9",
