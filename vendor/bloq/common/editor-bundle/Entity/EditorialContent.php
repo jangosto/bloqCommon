@@ -7,6 +7,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Bloq\Common\EditorBundle\Entity\Url;
 use Bloq\Common\EditorBundle\Entity\EditorialContentInterface;
 
+
+/**
+ * @ORM\Entity
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"article" = "AppBundle\Entity\Article", "gallery" = "AppBundle\Entity\Gallery"})
+ */
 class EditorialContent implements EditorialContentInterface
 {
     /**
@@ -52,7 +59,7 @@ class EditorialContent implements EditorialContentInterface
     protected $authors;
 
     /**
-     * @ORM\OneToMany(targetEntity="Url", mappedBy="content")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Url", mappedBy="content")
      * @ORM\JoinColumn(name="url_id", referencedColumnName="id")
      */
     protected $urls;

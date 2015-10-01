@@ -1,7 +1,5 @@
 <?php
 
-// src/AppBundle/Entity/User.php
-
 namespace Bloq\Common\EditorBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -23,7 +21,7 @@ class Url
     protected $url;
 
     /**
-     * @ORM\ManyToOne(target="EditorialContentInterface", inversedBy="urls")
+     * @ORM\ManyToOne(targetEntity="Bloq\Common\EditorBundle\Entity\EditorialContent", inversedBy="urls")
      * @ORM\JoinColumn(name="content_id", referencedColumnName="id")
      */
     protected $content;

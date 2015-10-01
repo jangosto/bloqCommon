@@ -1,6 +1,6 @@
 <?php
 
-namespace Bloq\Common\EditorBundle;
+namespace Bloq\Common\EditorBundle\Entity;
 
 use Bloq\Common\EditorBundle\Entity\Url;
 
