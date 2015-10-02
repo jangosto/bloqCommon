@@ -11,8 +11,11 @@ use Bloq\Common\EditorBundle\Entity\EditorialContentInterface;
 /**
  * @ORM\Entity
  * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"article" = "AppBundle\Entity\Article", "gallery" = "AppBundle\Entity\Gallery"})
+ * @ORM\DiscriminatorColumn(name="ec_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *      "article" = "AppBundle\Entity\Article",
+ *      "gallery" = "AppBundle\Entity\Gallery"
+ * })
  */
 class EditorialContent implements EditorialContentInterface
 {
