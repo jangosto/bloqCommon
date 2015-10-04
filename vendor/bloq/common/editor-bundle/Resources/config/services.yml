@@ -1,0 +1,29 @@
+parameters:
+    editor.article.entity.class: %editorial_contents.article.model_class%
+    editor.article.manager.class: %editorial_contents.article.manager_class%
+    editor.article.edition.form.type.class: %editorial_contents.article.form_type_class%
+    editor.article.edition.form.type.name: %editorial_contents.article.form_type_name%
+    editor.article.edition.form.name: editor_article_edition_form
+
+services:
+    editor.article.manager:
+        class: %editor.article.manager.class%
+        arguments:
+            - "@doctrine"
+            - %editor.article.entity.class%
+
+    editor.article.form.type:
+        class: %editor.article.edition.form.type.class%
+        arguments:
+            - %editor.article.entity.class%
+        tags:
+            - {name: form.type, alias: %editor.article.edition.form.type.name%}
+        #factory_method: createNamed
+        #factory_service: form.factory
+        #factory: ["@form.factory", createNamed]
+        #class: Symfony\Component\Form\Form
+        #arguments:
+        #    - %editor.article.edition.form.name%
+        #    - %editorial_contents.article.form_type_name%
+        #tags:
+        #    - {name: form.type, alias: %editorial_contents.article.form_type_name%}

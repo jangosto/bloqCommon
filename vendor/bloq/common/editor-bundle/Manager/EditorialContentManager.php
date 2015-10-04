@@ -4,41 +4,51 @@ namespace Bloq\Common\EditorBundle\Manager;
 
 class EditorialContentManager
 {
+    const DOCTRINE_ENTITY_MANAGER_CLASS = "Doctrine\\ORM\\EntityManager";
+    const DOCTRINE_SERVICE_CLASS = "Doctrine\\Bundle\\DoctrineBundle\\Registry";
+
     protected $em;
     protected $repository;
     protected $class;
 
-    public function __construct($em, $class)
+    public function __construct($doctrine, $class)
     {
-        $this->em = $em;
+        $doctrineServiceClass = self::DOCTRINE_SERVICE_CLASS;
+        $doctrineEntityManager = self::DOCTRINE_ENTITY_MANAGER_CLASS;
+
+        if ($doctrine instanceof $doctrineEntityManager) {
+            $this->em = $doctrine;
+        } elseif ($doctrine instanceof $doctrineServiceClass) {
+            $this->em = $doctrine->getManager('content');
+        }
         $this->class = $class;
-        $this->repository = $em->getRepository($this->class);
+        $this->repository = $this->em->getRepository($this->class);
     }
 
     public function getAll()
     {
-        $sites = $this->repository
+        $contents = $this->repository
             ->findAll();
 
-        if (null === $sites) {
-            $sites = array();
+        if (null === $contents) {
+            $contents = array();
         }
 
-        return $sites;
+        return $contents;
     }
 
-    public function getBySlug($slug)
+    public function getById($id)
     {
-        $site = $this->repository
+        $content = $this->repository
             ->findBy(
-                array("slug" => $slug)
+                array("id" => $id)
             );
 
-        if (null === $site) {
-            $site = null;
+        if (null === $content) {
+            $content = null;
         }
 
-        return $site;
+        return $content[0];
     }
 
     public function save($object)
@@ -51,12 +61,12 @@ class EditorialContentManager
 
     public function disableById($id)
     {
-        $site = $this->repository
+        $content = $this->repository
             ->find($id);
 
-        $site->setEnabled(false);
+        $content->setEnabled(false);
 
-        $this->save($site);
+        $this->save($content);
     }
 }
 

@@ -7,6 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Bloq\Common\EditorBundle\Entity\EditorialContentInterface;
 use Bloq\Common\EditorBundle\Entity\EditorialContent;
 
+/**
+ * @ORM\Entity
+ */
 class Article extends EditorialContent implements EditorialContentInterface
 {
 }

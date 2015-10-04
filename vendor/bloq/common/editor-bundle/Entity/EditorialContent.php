@@ -11,10 +11,13 @@ use Bloq\Common\EditorBundle\Entity\EditorialContentInterface;
 /**
  * @ORM\Entity
  * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="ec_type", type="string")
+ * @ORM\DiscriminatorColumn(name="type_class", type="string")
  * @ORM\DiscriminatorMap({
- *      "article" = "AppBundle\Entity\Article",
- *      "gallery" = "AppBundle\Entity\Gallery"
+ *      "Bloq\Common\EditorBundle\Entity\EditorialContent" = "Bloq\Common\EditorBundle\Entity\EditorialContent",
+ *      "Bloq\Common\EditorBundle\Entity\Article" = "Bloq\Common\EditorBundle\Entity\Article",
+ *      "Bloq\Common\EditorBundle\Entity\Gallery" = "Bloq\Common\EditorBundle\Entity\Gallery",
+ *      "AppBundle\Entity\Article" = "AppBundle\Entity\Article",
+ *      "AppBundle\Entity\Gallery" = "AppBundle\Entity\Gallery"
  * })
  */
 class EditorialContent implements EditorialContentInterface
@@ -27,37 +30,43 @@ class EditorialContent implements EditorialContentInterface
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      * @var string
      */
     protected $type;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
+     * @var string
+     */
+    protected $section;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
      * @var string
      */
     protected $pretitle;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      * @var string
      */
     protected $title;
 
     /**
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="string", nullable=true)
      * @var string
      */
     protected $subtitle;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      * @var string
      */
     protected $text;
 
     /**
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="array", nullable=true)
      */
     protected $authors;
 
@@ -68,25 +77,25 @@ class EditorialContent implements EditorialContentInterface
     protected $urls;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      * @var string
      */
     protected $status;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      * @var datetime
      */
     protected $createdDT;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      * @var datetime
      */
     protected $publishedDT;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      * @var datetime
      */
     protected $updatedDT;
