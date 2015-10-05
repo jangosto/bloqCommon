@@ -45,7 +45,7 @@ class ConnectionWrapper extends Connection
         $this->session->set(self::SESSION_ACTIVE_DYNAMIC_CONN, [
             $dbName,
             $dbUser,
-            $dbPass
+            $dbPassword
         ]);
 
         if ($this->isConnected()) {
