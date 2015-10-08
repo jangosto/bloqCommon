@@ -54,10 +54,16 @@ class EditorialContent implements EditorialContentInterface
     protected $title;
 
     /**
+     * @ORM\Column(type="array", nullable=true)
+     * @var string
+     */
+    protected $subtitles;
+
+    /**
      * @ORM\Column(type="string", nullable=true)
      * @var string
      */
-    protected $subtitle;
+    protected $intro;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -67,11 +73,24 @@ class EditorialContent implements EditorialContentInterface
 
     /**
      * @ORM\Column(type="array", nullable=true)
+     * @var array
      */
     protected $authors;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Url", mappedBy="content")
+     * @ORM\ManyToOne(targetEntity="Bloq\Common\EditorBundle\Entity\Category", inversedBy="contents")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     */
+    protected $category;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     * @var bool
+     */
+    protected $useCategoryAsPretitle;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Bloq\Common\EditorBundle\Entity\Url", mappedBy="content")
      * @ORM\JoinColumn(name="url_id", referencedColumnName="id")
      */
     protected $urls;
@@ -105,6 +124,33 @@ class EditorialContent implements EditorialContentInterface
     {
         $this->authors = array();
         $this->urls = new ArrayCollection();
+    }
+
+    /**
+     * Add subtitle
+     *
+     * @param subtitle
+     */
+    public function addSubtitle($subtitle)
+    {
+        $this->subtitles[] = $subtitle;
+
+        return $this;
+    }
+
+    /**
+     * Remove subtitle
+     *
+     * @param subtitle position
+     */
+    public function removeSubtitle($position)
+    {
+        if (isset($this->subtitles[$position])) {
+            unset($this->subtitles[$position]);
+            $this->subtitles = array_values($this->subtitles);
+        }
+
+        return $this;
     }
 
     /**
@@ -145,6 +191,8 @@ class EditorialContent implements EditorialContentInterface
     {
         $url->setContent($this);
         $this->urls[] = $url;
+
+        return $this;
     }
 
     /**
@@ -156,6 +204,8 @@ class EditorialContent implements EditorialContentInterface
     {
         $this->urls->remove($url);
         $url->setContent(null);
+
+        return $this;
     }
 
     /**
@@ -219,23 +269,23 @@ class EditorialContent implements EditorialContentInterface
     }
     
     /**
-     * Get subtitle.
+     * Get subtitles.
      *
-     * @return subtitle.
+     * @return subtitles.
      */
-    public function getSubtitle()
+    public function getSubtitles()
     {
-        return $this->subtitle;
+        return $this->subtitles;
     }
     
     /**
-     * Set subtitle.
+     * Set subtitles.
      *
-     * @param subtitle the value to set.
+     * @param subtitles the value to set.
      */
-    public function setSubtitle($subtitle)
+    public function setSubtitles($subtitles)
     {
-        $this->subtitle = $subtitle;
+        $this->subtitles = $subtitles;
     }
     
     /**
@@ -376,6 +426,86 @@ class EditorialContent implements EditorialContentInterface
     public function setUpdatedDT($updatedDT)
     {
         $this->updatedDT = $updatedDT;
+    }
+    
+    /**
+     * Get intro.
+     *
+     * @return intro.
+     */
+    public function getIntro()
+    {
+        return $this->intro;
+    }
+    
+    /**
+     * Set intro.
+     *
+     * @param intro the value to set.
+     */
+    public function setIntro($intro)
+    {
+        $this->intro = $intro;
+    }
+    
+    /**
+     * Get useCategoryAsPretitle.
+     *
+     * @return useCategoryAsPretitle.
+     */
+    public function getUseCategoryAsPretitle()
+    {
+        return $this->useCategoryAsPretitle;
+    }
+    
+    /**
+     * Set useCategoryAsPretitle.
+     *
+     * @param useCategoryAsPretitle the value to set.
+     */
+    public function setUseCategoryAsPretitle($useCategoryAsPretitle)
+    {
+        $this->useCategoryAsPretitle = $useCategoryAsPretitle;
+    }
+    
+    /**
+     * Get category.
+     *
+     * @return category.
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+    
+    /**
+     * Set category.
+     *
+     * @param category the value to set.
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
+    }
+    
+    /**
+     * Get section.
+     *
+     * @return section.
+     */
+    public function getSection()
+    {
+        return $this->section;
+    }
+    
+    /**
+     * Set section.
+     *
+     * @param section the value to set.
+     */
+    public function setSection($section)
+    {
+        $this->section = $section;
     }
 }
 
