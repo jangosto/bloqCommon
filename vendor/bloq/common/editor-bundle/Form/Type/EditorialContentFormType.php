@@ -23,7 +23,11 @@ class EditorialContentFormType extends AbstractType
 
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-		$builder
+        $builder
+            /*->add('section', null, array(
+                'label' => 'form.section',
+                'required' => false
+            ))*/
 			->add('pretitle', null, array(
 				'label' => 'form.pretitle',
 				'required' => false
@@ -32,14 +36,40 @@ class EditorialContentFormType extends AbstractType
 				'label' => 'form.title',
 				'required' => true
 			))
-			->add('subtitle', null, array(
-				'label' => 'form.subtitle',
-				'required' => false
-			))
-			->add('text', null, array(
+            ->add('subtitles', 'collection', array(
+                'type' => 'text',
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+                'options'  => array(
+                    'required'  => false,
+                    'attr'      => array('class' => 'subtitle-box')
+                )
+            ))
+            ->add('intro', 'textarea', array(
+                'label' => 'form.intro',
+                'required' => false
+            ))
+			->add('text', 'textarea', array(
 				'label' => 'form.text',
-				'required' => false
-			));
+                'required' => false
+            ))
+            ->add('category', 'entity', array(
+                'class' => 'Bloq\Common\EditorBundle\Entity\Category',
+                'required' => false,
+                'property' => 'name',
+                'multiple' => false
+            ))
+            ->add('useCategoryAsPretitle', 'checkbox', array(
+                'label' => 'Usar categoría como antetítulo',
+                'required' => false
+            ))
+            ->add('tags', 'entity', array(
+                'class' => 'Bloq\Common\EditorBundle\Entity\Tag',
+                'required' => false,
+                'property' => 'name',
+                'multiple' => true
+            ));
 	}
 
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
