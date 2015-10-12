@@ -41,6 +41,11 @@ class UserCreationFormType extends AbstractType
                 'translation_domain' => 'FOSUserBundle',
                 'required' => true
             ))
+            ->add ('plainPassword', null, array(
+                'label' => 'form.plainPassword',
+                'translation_domain' => 'FOSUserBundle',
+                'required' => true
+            ))
             ->add('email', 'email', array(
                 'label' => 'form.email',
                 'translation_domain' => 'FOSUserBundle',

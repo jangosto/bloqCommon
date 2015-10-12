@@ -13,10 +13,10 @@ class UserCreationFormHandler extends BaseHandler
 {
     public function process($confirmation = false)
     {
-        $password = substr($this->tokenGenerator->generateToken(), 0, 15);
+        //$password = substr($this->tokenGenerator->generateToken(), 0, 15);
 
         $user = $this->createUser();
-        $user->setPlainPassword($password);
+        //$user->setPlainPassword($password);
         $this->form->setData($user);
 
         if ('POST' === $this->request->getMethod()) {
@@ -25,7 +25,7 @@ class UserCreationFormHandler extends BaseHandler
             if ($this->form->isValid()) {
                 $this->onSuccess($user, $confirmation);
 
-                return $password;
+                return $user;
             }
         }
 
