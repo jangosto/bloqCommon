@@ -66,7 +66,7 @@ class EditorialContent implements EditorialContentInterface
     protected $intro;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      * @var string
      */
     protected $text;
@@ -78,7 +78,7 @@ class EditorialContent implements EditorialContentInterface
     protected $authors;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Bloq\Common\EditorBundle\Entity\Category", inversedBy="contents")
+     * @ORM\ManyToOne(targetEntity="Bloq\Common\EditorBundle\Entity\Category")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     protected $category;
@@ -94,6 +94,16 @@ class EditorialContent implements EditorialContentInterface
      * @ORM\JoinColumn(name="url_id", referencedColumnName="id")
      */
     protected $urls;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Bloq\Common\EditorBundle\Entity\Tag")
+     * @ORM\JoinTable(
+     *      name="contents_tags",
+     *      joinColumns={@ORM\JoinColumn(name="content_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")}
+     *      )
+     */
+    protected $tags;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -124,6 +134,7 @@ class EditorialContent implements EditorialContentInterface
     {
         $this->authors = array();
         $this->urls = new ArrayCollection();
+        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -285,7 +296,7 @@ class EditorialContent implements EditorialContentInterface
      */
     public function setSubtitles($subtitles)
     {
-        $this->subtitles = $subtitles;
+        $this->subtitles = array_values($subtitles);
     }
     
     /**
@@ -506,6 +517,26 @@ class EditorialContent implements EditorialContentInterface
     public function setSection($section)
     {
         $this->section = $section;
+    }
+    
+    /**
+     * Get tags.
+     *
+     * @return tags.
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+    
+    /**
+     * Set tags.
+     *
+     * @param tags the value to set.
+     */
+    public function setTags($tags)
+    {
+        $this->tags = $tags;
     }
 }
 

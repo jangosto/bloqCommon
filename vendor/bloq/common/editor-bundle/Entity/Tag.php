@@ -8,9 +8,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="category")
+ * @ORM\Table(name="tag")
  */
-class Category
+class Tag
 {
     /**
      * @ORM\Id

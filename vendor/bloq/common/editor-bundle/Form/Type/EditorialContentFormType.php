@@ -24,10 +24,10 @@ class EditorialContentFormType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
         $builder
-            ->add('section', null, array(
-                'label' => 'form.category',
-                'required' => true
-            ))
+            /*->add('section', null, array(
+                'label' => 'form.section',
+                'required' => false
+            ))*/
 			->add('pretitle', null, array(
 				'label' => 'form.pretitle',
 				'required' => false
@@ -52,17 +52,23 @@ class EditorialContentFormType extends AbstractType
             ))
 			->add('text', 'textarea', array(
 				'label' => 'form.text',
-				'required' => false
+                'required' => false
             ))
             ->add('category', 'entity', array(
                 'class' => 'Bloq\Common\EditorBundle\Entity\Category',
                 'required' => false,
                 'property' => 'name',
-                'multiple' => false,
+                'multiple' => false
             ))
             ->add('useCategoryAsPretitle', 'checkbox', array(
                 'label' => 'Usar categoría como antetítulo',
                 'required' => false
+            ))
+            ->add('tags', 'entity', array(
+                'class' => 'Bloq\Common\EditorBundle\Entity\Tag',
+                'required' => false,
+                'property' => 'name',
+                'multiple' => true
             ));
 	}
 
