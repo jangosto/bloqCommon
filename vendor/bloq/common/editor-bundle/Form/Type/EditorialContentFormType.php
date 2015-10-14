@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Bloq\Common\EditorBundle\Form\Type\EditorialContentFormType;
+use Bloq\Common\MultimediaBundle\Form\Type\MultimediaFormType as MultimediaFormType;
 
 class EditorialContentFormType extends AbstractType
 {
@@ -43,7 +43,7 @@ class EditorialContentFormType extends AbstractType
                 'prototype' => true,
                 'options'  => array(
                     'required'  => false,
-                    'attr'      => array('class' => 'subtitle-box')
+                    //'attr'      => array('class' => 'subtitle-box')
                 )
             ))
             ->add('intro', 'textarea', array(
@@ -53,6 +53,26 @@ class EditorialContentFormType extends AbstractType
 			->add('text', 'textarea', array(
 				'label' => 'form.text',
                 'required' => false
+            ))
+            ->add('multimedias', 'collection', array(
+                'type' => new MultimediaFormType("Bloq\Common\MultimediaBundle\Entity\Multimedia"),
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+                'options'  => array(
+                    'required'  => false,
+                    //'attr'      => array('class' => 'subtitle-box')
+                )
+            ))
+            ->add('summaries', 'collection', array(
+                'type' => 'text',
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+                'options'  => array(
+                    'required'  => false,
+                    //'attr'      => array('class' => 'subtitle-box')
+                )
             ))
             ->add('category', 'entity', array(
                 'class' => 'Bloq\Common\EditorBundle\Entity\Category',

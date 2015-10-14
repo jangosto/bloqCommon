@@ -60,7 +60,7 @@ class EditorialContent implements EditorialContentInterface
     protected $subtitles;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      * @var string
      */
     protected $intro;
@@ -70,6 +70,22 @@ class EditorialContent implements EditorialContentInterface
      * @var string
      */
     protected $text;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Bloq\Common\MultimediaBundle\Entity\Multimedia")
+     * @ORM\JoinTable(
+     *      name="contents_multimedias",
+     *      joinColumns={@ORM\JoinColumn(name="content_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="multimedia_id", referencedColumnName="id")}
+     *      )
+     */
+    protected $multimedias;
+
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     * @var string
+     */
+    protected $summaries;
 
     /**
      * @ORM\Column(type="array", nullable=true)
@@ -134,7 +150,8 @@ class EditorialContent implements EditorialContentInterface
     {
         $this->authors = array();
         $this->urls = new ArrayCollection();
-        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tags = new ArrayCollection();
+        $this->multimedias = new ArrayCollection();
     }
 
     /**
@@ -159,6 +176,33 @@ class EditorialContent implements EditorialContentInterface
         if (isset($this->subtitles[$position])) {
             unset($this->subtitles[$position]);
             $this->subtitles = array_values($this->subtitles);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Add summary
+     *
+     * @param summary
+     */
+    public function addSummary($summary)
+    {
+        $this->summaries[] = $summary;
+
+        return $this;
+    }
+
+    /**
+     * Remove summary
+     *
+     * @param summary position
+     */
+    public function removeSummary($position)
+    {
+        if (isset($this->summaries[$position])) {
+            unset($this->summaries[$position]);
+            $this->summaries = array_values($this->summaries);
         }
 
         return $this;
@@ -537,6 +581,46 @@ class EditorialContent implements EditorialContentInterface
     public function setTags($tags)
     {
         $this->tags = $tags;
+    }
+    
+    /**
+     * Get multimedias.
+     *
+     * @return multimedias.
+     */
+    public function getMultimedias()
+    {
+        return $this->multimedias;
+    }
+    
+    /**
+     * Set multimedias.
+     *
+     * @param multimedias the value to set.
+     */
+    public function setMultimedias($multimedias)
+    {
+        $this->multimedias = $multimedias;
+    }
+    
+    /**
+     * Get summaries.
+     *
+     * @return summaries.
+     */
+    public function getSummaries()
+    {
+        return $this->summaries;
+    }
+    
+    /**
+     * Set summaries.
+     *
+     * @param summaries the value to set.
+     */
+    public function setSummaries($summaries)
+    {
+        $this->summaries = $summaries;
     }
 }
 

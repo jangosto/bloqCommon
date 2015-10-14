@@ -1,8 +1,8 @@
 <?php
 
-namespace Bloq\Common\EditorBundle\Manager;
+namespace Bloq\Common\MultimediaBundle;
 
-class EditorialContentManager
+class MultimediaManager
 {
     const DOCTRINE_ENTITY_MANAGER_CLASS = "Doctrine\\ORM\\EntityManager";
     const DOCTRINE_SERVICE_CLASS = "Doctrine\\Bundle\\DoctrineBundle\\Registry";
@@ -27,28 +27,42 @@ class EditorialContentManager
 
     public function getAll()
     {
-        $contents = $this->repository
+        $multimedias = $this->repository
             ->findAll();
 
-        if (null === $contents) {
-            $contents = array();
+        if (null === $multimedias) {
+            $multimedias = array();
         }
 
-        return $contents;
+        return $multimedias;
+    }
+
+    public function getAllByType($type)
+    {
+        $multimedias = $this->repository
+            ->findBy(
+                array('type' => $type)
+            );
+
+        if (null === $multimedias) {
+            $multimedias = array();
+        }
+
+        return $multimedias;
     }
 
     public function getById($id)
     {
-        $content = $this->repository
+        $multimedia = $this->repository
             ->findBy(
                 array("id" => $id)
             );
 
-        if (null === $content) {
-            $content = null;
+        if (null === $multimedia) {
+            $multimedia = null;
         }
 
-        return $content[0];
+        return $multimedia[0];
     }
 
     public function save($object)
@@ -57,15 +71,5 @@ class EditorialContentManager
         $this->em->flush();
 
         return $object->getId();
-    }
-
-    public function disableById($id)
-    {
-        $content = $this->repository
-            ->find($id);
-
-        $content->setEnabled(false);
-
-        $this->save($content);
     }
 }
