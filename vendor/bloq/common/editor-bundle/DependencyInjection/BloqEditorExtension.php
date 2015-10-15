@@ -26,11 +26,6 @@ class BloqEditorExtension extends Extension
         foreach ($config['editorial_contents'] as $editorialContentType => $editorialContentConf) {
             foreach ($editorialContentConf as $confName => $confValue) {
                 $container->setParameter('editorial_contents.'.$editorialContentType.'.'.$confName, $confValue);
-                /*$container->setParameter('editorial_contents.'.$editorialContentType.'.model_class', $editorialContentConf['model_class']);
-                $container->setParameter('editorial_contents.'.$editorialContentType.'.manager_class', $editorialContentConf['manager_class']);
-	            $container->setParameter('editorial_contents.'.$editorialContentType.'.form_type_class', $editorialContentConf['form_type_class']);
-                $container->setParameter('editorial_contents.'.$editorialContentType.'.form_type_name', $editorialContentConf['form_type_name']);
-                */
             }
         }
     }

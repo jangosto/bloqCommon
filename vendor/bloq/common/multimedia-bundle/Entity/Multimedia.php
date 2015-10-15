@@ -31,14 +31,12 @@ class Multimedia
     protected $position;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
-     *
-     * @Assert\File(mimeTypes={ "image/*" }, mimeTypesMessage="El fichero añadido no es una imagen válida")
+     * @Assert\File(mimeTypes={ "image/*" }, mimeTypesMessage="El fichero añadido no es una imagen válida", maxSize="1M", maxSizeMessage="El fichero añadido es demasiado grande (tamaño máximo: 1M)")
      */
     protected $file;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      * @var string
      */
     protected $url;
@@ -277,5 +275,25 @@ class Multimedia
     public function setHtmlCode($htmlCode)
     {
         $this->htmlCode = $htmlCode;
+    }
+    
+    /**
+     * Get position.
+     *
+     * @return position.
+     */
+    public function getPosition()
+    {
+        return $this->position;
+    }
+    
+    /**
+     * Set position.
+     *
+     * @param position the value to set.
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
     }
 }

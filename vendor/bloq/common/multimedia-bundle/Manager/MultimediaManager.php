@@ -1,6 +1,6 @@
 <?php
 
-namespace Bloq\Common\MultimediaBundle;
+namespace Bloq\Common\MultimediaBundle\Manager;
 
 class MultimediaManager
 {

@@ -72,7 +72,7 @@ class EditorialContent implements EditorialContentInterface
     protected $text;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Bloq\Common\MultimediaBundle\Entity\Multimedia")
+     * @ORM\ManyToMany(targetEntity="Bloq\Common\MultimediaBundle\Entity\Multimedia", cascade={"persist"})
      * @ORM\JoinTable(
      *      name="contents_multimedias",
      *      joinColumns={@ORM\JoinColumn(name="content_id", referencedColumnName="id")},

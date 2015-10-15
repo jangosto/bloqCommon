@@ -50,6 +50,14 @@ class MultimediaFormType extends AbstractType
             ->add('htmlCode', 'textarea', array(
                 'label' => 'form.htmlCode',
                 'required' => false
+            ))
+            ->add('position', null, array(
+                'label' => 'form.position',
+                'required' => false
+            ))
+            ->add('type', null, array(
+                'label' => 'form.type',
+                'required' => false
             ));
     }
 
