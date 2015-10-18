@@ -2,7 +2,7 @@
 
 namespace Bloq\Common\EditorBundle\Manager;
 
-class EditorialContentManager
+class TagManager
 {
     const DOCTRINE_ENTITY_MANAGER_CLASS = "Doctrine\\ORM\\EntityManager";
     const DOCTRINE_SERVICE_CLASS = "Doctrine\\Bundle\\DoctrineBundle\\Registry";
@@ -49,6 +49,22 @@ class EditorialContentManager
         }
 
         return $content[0];
+    }
+
+    public function getAllByParent($id)
+    {
+        $parentContent = $this->repository
+            ->findBy(
+                array("id" => $id)
+            );
+
+        if (null === $parentContent) {
+            $content = array();
+        } else {
+            $content = $parentContent->getChildren();
+        }
+        
+        return $content;
     }
 
     public function save($object)

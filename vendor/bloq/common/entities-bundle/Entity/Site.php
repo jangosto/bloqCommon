@@ -37,6 +37,12 @@ class Site
     protected $domain;
 
     /**
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    protected $domainPath;
+
+    /**
      * @ORM\Column(type="boolean")
      * @var boolean
      */
@@ -180,6 +186,26 @@ class Site
     public function removeUser(User $user)
     {
         $this->users->remove($user);
+    }
+    
+    /**
+     * Get domainPath.
+     *
+     * @return domainPath.
+     */
+    public function getDomainPath()
+    {
+        return $this->domainPath;
+    }
+    
+    /**
+     * Set domainPath.
+     *
+     * @param domainPath the value to set.
+     */
+    public function setDomainPath($domainPath)
+    {
+        $this->domainPath = $domainPath;
     }
 }
 
