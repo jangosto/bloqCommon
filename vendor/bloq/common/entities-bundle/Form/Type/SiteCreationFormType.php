@@ -28,10 +28,14 @@ class SiteCreationFormType extends AbstractType
             ))
             ->add('slug', null, array(
                 'label' => 'form.slug',
-                'required' => false
+                'required' => true
             ))
             ->add('domain', null, array(
                 'label' => 'form.domain',
+                'required' => true
+            ))
+            ->add('domainPath', null, array(
+                'label' => 'form.domainPath',
                 'required' => true
             ));
     }

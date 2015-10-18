@@ -26,7 +26,7 @@ class Url
     protected $url;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Bloq\Common\EditorBundle\Entity\EditorialContent", inversedBy="urls")
+     * @ORM\ManyToOne(targetEntity="Bloq\Common\EditorBundle\Entity\EditorialContentInterface", inversedBy="urls")
      * @ORM\JoinColumn(name="content_id", referencedColumnName="id")
      */
     protected $content;
@@ -43,10 +43,6 @@ class Url
      */
     protected $primary;
 
-    public function __construct()
-    {
-        
-    }
     
     /**
      * Get id.

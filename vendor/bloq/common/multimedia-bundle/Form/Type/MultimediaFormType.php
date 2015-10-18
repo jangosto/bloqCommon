@@ -23,8 +23,8 @@ class MultimediaFormType extends AbstractType
                 'label' => 'form.file',
                 'required' => false
             ))
-            ->add('url', null, array(
-                'label' => 'form.url',
+            ->add('path', null, array(
+                'label' => 'form.path',
                 'required' => 'false'
             ))
             ->add('title', null, array(

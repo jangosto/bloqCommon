@@ -39,12 +39,6 @@ class EditorialContent implements EditorialContentInterface
      * @ORM\Column(type="string", nullable=true)
      * @var string
      */
-    protected $section;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @var string
-     */
     protected $pretitle;
 
     /**
@@ -107,7 +101,6 @@ class EditorialContent implements EditorialContentInterface
 
     /**
      * @ORM\OneToMany(targetEntity="Bloq\Common\EditorBundle\Entity\Url", mappedBy="content")
-     * @ORM\JoinColumn(name="url_id", referencedColumnName="id")
      */
     protected $urls;
 
@@ -149,6 +142,8 @@ class EditorialContent implements EditorialContentInterface
     public function __construct()
     {
         $this->authors = array();
+        $this->subtitles = array();
+        $this->summaries = array();
         $this->urls = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->multimedias = new ArrayCollection();
@@ -171,10 +166,10 @@ class EditorialContent implements EditorialContentInterface
      *
      * @param subtitle position
      */
-    public function removeSubtitle($position)
+    public function removeSubtitle($subtitle)
     {
-        if (isset($this->subtitles[$position])) {
-            unset($this->subtitles[$position]);
+        if (false !== $key = array_search($subtitle, $this->subtitles, true)) {
+            unset($this->subtitles[$key]);
             $this->subtitles = array_values($this->subtitles);
         }
 
@@ -198,10 +193,10 @@ class EditorialContent implements EditorialContentInterface
      *
      * @param summary position
      */
-    public function removeSummary($position)
+    public function removeSummary($summary)
     {
-        if (isset($this->summaries[$position])) {
-            unset($this->summaries[$position]);
+        if (false !== $key = array_search($summary, $this->summaries, true)) {
+            unset($this->summaries[$key]);
             $this->summaries = array_values($this->summaries);
         }
 

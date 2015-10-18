@@ -31,6 +31,33 @@ class Tag
      */
     protected $slug;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * @var string
+     */
+    protected $description;
+
+     /**
+      * @ORM\Column(type="integer", nullable=true)
+      * @var int
+      */
+     private $parentId;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Bloq\Common\EditorBundle\Entity\EditorialContentInterface", mappedBy="tags")
+     */
+    protected $contents;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     * @var bool
+     */
+    protected $enabled;
+
+
+    public function __construct() {
+        $this->contents = new ArrayCollection();
+    }
 
     /**
      * Get id.
@@ -90,5 +117,105 @@ class Tag
     public function setSlug($slug)
     {
         $this->slug = $slug;
+    }
+    
+    /**
+     * Get contents.
+     *
+     * @return contents.
+     */
+    public function getContents()
+    {
+        return $this->contents;
+    }
+    
+    /**
+     * Set contents.
+     *
+     * @param contents the value to set.
+     */
+    public function setContents($contents)
+    {
+        $this->contents = $contents;
+    }
+    
+    /**
+     * Get description.
+     *
+     * @return description.
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+    
+    /**
+     * Set description.
+     *
+     * @param description the value to set.
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+    
+    /**
+     * Get children.
+     *
+     * @return children.
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+    
+    /**
+     * Set children.
+     *
+     * @param children the value to set.
+     */
+    public function setChildren($children)
+    {
+        $this->children = $children;
+    }
+    
+    /**
+     * Get parentId.
+     *
+     * @return parentId.
+     */
+    public function getParentId()
+    {
+        return $this->parentId;
+    }
+    
+    /**
+     * Set parentId.
+     *
+     * @param parentId the value to set.
+     */
+    public function setParentId($parentId)
+    {
+        $this->parentId = $parentId;
+    }
+    
+    /**
+     * Get enabled.
+     *
+     * @return enabled.
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+    
+    /**
+     * Set enabled.
+     *
+     * @param enabled the value to set.
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
     }
 }

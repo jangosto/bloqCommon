@@ -39,7 +39,7 @@ class Multimedia
      * @ORM\Column(type="string", nullable=true)
      * @var string
      */
-    protected $url;
+    protected $path;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -118,23 +118,23 @@ class Multimedia
     }
     
     /**
-     * Get url.
+     * Get path.
      *
-     * @return url.
+     * @return path.
      */
-    public function getUrl()
+    public function getPath()
     {
-        return $this->url;
+        return $this->path;
     }
     
     /**
-     * Set url.
+     * Set path.
      *
-     * @param url the value to set.
+     * @param path the value to set.
      */
-    public function setUrl($url)
+    public function setPath($path)
     {
-        $this->url = $url;
+        $this->path = $path;
     }
     
     /**

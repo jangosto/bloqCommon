@@ -5,6 +5,18 @@ parameters:
     editor.article.edition.form.type.name: %editorial_contents.article.form_type_name%
     editor.article.edition.form.name: editor_article_edition_form
 
+    editor.category.entity.class: Bloq\Common\EditorBundle\Entity\Category
+    editor.category.manager.class: Bloq\Common\EditorBundle\Manager\CategoryManager
+    editor.category.edition.form.type.class: Bloq\Common\EditorBundle\Form\Type\CategoryFormType
+    editor.category.edition.form.type.name: editor_category_edition
+    editor.category.edition.form.name: editor_category_edition_form
+
+    editor.tag.entity.class: Bloq\Common\EditorBundle\Entity\Tag
+    editor.tag.manager.class: Bloq\Common\EditorBundle\Manager\TagManager
+    editor.tag.edition.form.type.class: Bloq\Common\EditorBundle\Form\Type\TagFormType
+    editor.tag.edition.form.type.name: editor_tag_edition
+    editor.tag.edition.form.name: editor_tag_edition_form
+
 services:
     editor.article.manager:
         class: %editor.article.manager.class%
@@ -27,3 +39,31 @@ services:
         #    - %editorial_contents.article.form_type_name%
         #tags:
         #    - {name: form.type, alias: %editorial_contents.article.form_type_name%}
+
+    editor.category.manager:
+        class: %editor.category.manager.class%
+        arguments:
+            - "@doctrine"
+            - %editor.category.entity.class%
+
+    editor.category.form.type:
+        class: %editor.category.edition.form.type.class%
+        arguments:
+            - %editor.category.entity.class%
+            - "@editor.category.manager"
+        tags:
+            - {name: form.type, alias: %editor.category.edition.form.type.name%}
+
+    editor.tag.manager:
+        class: %editor.tag.manager.class%
+        arguments:
+            - "@doctrine"
+            - %editor.tag.entity.class%
+
+    editor.tag.form.type:
+        class: %editor.tag.edition.form.type.class%
+        arguments:
+            - %editor.tag.entity.class%
+            - "@editor.tag.manager"
+        tags:
+            - {name: form.type, alias: %editor.tag.edition.form.type.name%}

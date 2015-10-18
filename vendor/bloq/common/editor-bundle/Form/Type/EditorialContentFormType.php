@@ -24,10 +24,6 @@ class EditorialContentFormType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
         $builder
-            /*->add('section', null, array(
-                'label' => 'form.section',
-                'required' => false
-            ))*/
 			->add('pretitle', null, array(
 				'label' => 'form.pretitle',
 				'required' => false
@@ -89,7 +85,9 @@ class EditorialContentFormType extends AbstractType
                 'required' => false,
                 'property' => 'name',
                 'multiple' => true
-            ));
+            ))
+            ->add('save', 'submit', array())
+            ->add('publish', 'submit', array());
 	}
 
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
