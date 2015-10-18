@@ -68,4 +68,14 @@ class EditorialContentManager
 
         $this->save($content);
     }
+
+    public function getAllByStatus($status) {
+        $contents = $this->repository
+            ->findBy(
+                array("status" => $status),
+                array('createdDT' => 'DESC')
+            );
+
+        return $contents;
+    }
 }

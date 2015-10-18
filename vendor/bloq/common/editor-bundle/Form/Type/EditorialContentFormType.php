@@ -52,9 +52,9 @@ class EditorialContentFormType extends AbstractType
             ))
             ->add('multimedias', 'collection', array(
                 'type' => new MultimediaFormType("Bloq\Common\MultimediaBundle\Entity\Multimedia"),
-                'allow_add' => true,
-                'allow_delete' => true,
-                'prototype' => true,
+                'allow_add' => false,
+                'allow_delete' => false,
+                'prototype' => false,
                 'options'  => array(
                     'required'  => false,
                     //'attr'      => array('class' => 'subtitle-box')
