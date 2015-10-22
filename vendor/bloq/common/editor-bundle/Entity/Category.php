@@ -42,23 +42,18 @@ class Category
      * @var int
      */
     private $parentId;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Bloq\Common\EditorBundle\Entity\EditorialContentInterface", mappedBy="categories")
-     */
-    protected $contents;
-
+    
     /**
      * @ORM\Column(type="boolean", nullable=true)
      * @var bool
      */
     protected $enabled;
 
+    /**
+     * @var array
+     */
+    protected $children;
 
-    public function __construct()
-    {
-        $this->contents = new ArrayCollection();
-    }
 
     /**
      * Get id.
@@ -141,46 +136,6 @@ class Category
     }
     
     /**
-     * Get contents.
-     *
-     * @return contents.
-     */
-    public function getContents()
-    {
-        return $this->contents;
-    }
-    
-    /**
-     * Set contents.
-     *
-     * @param contents the value to set.
-     */
-    public function setContents($contents)
-    {
-        $this->contents = $contents;
-    }
-    
-    /**
-     * Get children.
-     *
-     * @return children.
-     */
-    public function getChildren()
-    {
-        return $this->children;
-    }
-    
-    /**
-     * Set children.
-     *
-     * @param children the value to set.
-     */
-    public function setChildren($children)
-    {
-        $this->children = $children;
-    }
-    
-    /**
      * Get parentId.
      *
      * @return parentId.
@@ -218,5 +173,25 @@ class Category
     public function setEnabled($enabled)
     {
         $this->enabled = $enabled;
+    }
+    
+    /**
+     * Get children.
+     *
+     * @return children.
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+    
+    /**
+     * Set children.
+     *
+     * @param children the value to set.
+     */
+    public function setChildren($children)
+    {
+        $this->children = $children;
     }
 }

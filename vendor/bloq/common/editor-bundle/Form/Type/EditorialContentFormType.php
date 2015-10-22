@@ -11,14 +11,16 @@ use Bloq\Common\MultimediaBundle\Form\Type\MultimediaFormType as MultimediaFormT
 
 class EditorialContentFormType extends AbstractType
 {
-	private $class;
+    private $class;
+    private $categoryManager;
 
 	/**
 	 * @param string $class The Article class name
 	 */
-	public function __construct($class)
+	public function __construct($class, $categoryManager)
 	{
-		$this->class = $class;
+        $this->class = $class;
+        $this->categoryManager = $categoryManager;
 	}
 
 	public function buildForm(FormBuilderInterface $builder, array $options)
@@ -70,25 +72,37 @@ class EditorialContentFormType extends AbstractType
                     //'attr'      => array('class' => 'subtitle-box')
                 )
             ))
-            ->add('category', 'entity', array(
-                'class' => 'Bloq\Common\EditorBundle\Entity\Category',
+            ->add('categoryId', 'choice', array(
                 'required' => false,
-                'property' => 'name',
+                'choices' => $this->getCategories(),
                 'multiple' => false
             ))
             ->add('useCategoryAsPretitle', 'checkbox', array(
                 'label' => 'Usar categoría como antetítulo',
                 'required' => false
             ))
-            ->add('tags', 'entity', array(
+/*            ->add('tags', 'entity', array(
                 'class' => 'Bloq\Common\EditorBundle\Entity\Tag',
                 'required' => false,
                 'property' => 'name',
                 'multiple' => true
             ))
+*/
             ->add('save', 'submit', array())
             ->add('publish', 'submit', array());
-	}
+    }
+
+    private function getCategories()
+    {
+        $categories = $this->categoryManager->getAllEnabled();
+
+        $categoriesArray = array();
+        foreach ($categories as $category) {
+            $categoriesArray[$category->getId()] = $category->getName();
+        }
+
+        return $categoriesArray;
+    }
 
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
