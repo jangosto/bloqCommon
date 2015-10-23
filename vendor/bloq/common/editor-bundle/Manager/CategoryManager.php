@@ -130,10 +130,17 @@ class CategoryManager
         $this->save($content);
     }
 
-    public function getAllWithHierarchy()
+    public function getAllWithHierarchy($onlyEnabled = false)
     {
-        $contents = $this->repository
-            ->findAll();
+        if ($onlyEnabled === true) {
+            $contents = $this->repository
+                ->findBy(array(
+                    'enabled' => true
+                ));
+        } else {
+            $contents = $this->repository
+                ->findAll();
+        }
 
         return $this->buildTree($contents);
     }

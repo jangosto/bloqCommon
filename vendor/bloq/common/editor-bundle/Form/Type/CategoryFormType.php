@@ -48,14 +48,27 @@ class CategoryFormType extends AbstractType
 
     private function getCategories()
     {
-        $categories = $this->categoryManager->getAll();
-
         $categoriesArray = array();
-        foreach ($categories as $category) {
-            $categoriesArray[$category->getId()] = $category->getName();
-        }
+        $this->getElementsArrayWithHierarchy($this->categoryManager->getAllWithHierarchy(), $categoriesArray);
 
         return $categoriesArray;
+    }
+
+    private function getElementsArrayWithHierarchy($elements, &$elementsArray, $level = 0)
+    {
+        $i = $level;
+        $levelator = "";
+        while ($i > 0) {
+            $levelator .= "-";
+            $i--;
+        }
+
+        foreach ($elements as $element) {
+            $elementsArray[$element->getId()] = $levelator." ".$element->getName();
+            if ($element->getChildren() !== null && count($element->getChildren()) > 0) {
+                $this->getElementsArrayWithHierarchy($element->getChildren(), $elementsArray, $level+2);
+            }
+        }
     }
 
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
