@@ -36,6 +36,20 @@ class CategoryManager
 
         return $contents;
     }
+    
+    public function getAllEnabled()
+    {
+        $contents = $this->repository
+            ->findBy(array(
+                'enabled' => true
+            ));
+
+        if (null === $contents) {
+            $contents = array();
+        }
+
+        return $contents;
+    }
 
     public function getById($id)
     {
@@ -69,6 +83,14 @@ class CategoryManager
 
     public function save($object)
     {
+        if ($object->getEnabled() === null) {
+            $object->setEnabled(false);
+        }
+
+        if ($object->getParentId() === null) {
+            $object->setParentId(0);
+        }
+
         $this->em->persist($object);
         $this->em->flush();
 
@@ -82,6 +104,61 @@ class CategoryManager
 
         $content->setEnabled(false);
 
+        $children = $this->repository
+            ->findBy(array(
+                'parentId' => $content->getId()
+            ));
+
+        foreach ($children as $child) {
+            $this->disableById($child->getId());
+        }
+
         $this->save($content);
     }
+
+    public function enableById($id)
+    {
+        $content = $this->repository
+            ->find($id);
+
+        $content->setEnabled(true);
+
+        if ($content->getParentId() !== null && $content->getParentId() !== 0) {
+            $this->enableById($content->getParentId());
+        }
+
+        $this->save($content);
+    }
+
+    public function getAllWithHierarchy($onlyEnabled = false)
+    {
+        if ($onlyEnabled === true) {
+            $contents = $this->repository
+                ->findBy(array(
+                    'enabled' => true
+                ));
+        } else {
+            $contents = $this->repository
+                ->findAll();
+        }
+
+        return $this->buildTree($contents);
+    }
+
+    private function buildTree($elements, $parentId = 0) {
+        $branch = array();
+
+        foreach ($elements as $element) {
+            if ($element->getParentId() == $parentId) {
+                $children = $this->buildTree($elements, $element->getId());
+                if ($children) {
+                    $element->setChildren($children);
+                }
+                $branch[] = $element;
+            }
+        }
+
+        return $branch;
+    }
+
 }

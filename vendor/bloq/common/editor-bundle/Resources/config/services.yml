@@ -28,6 +28,7 @@ services:
         class: %editor.article.edition.form.type.class%
         arguments:
             - %editor.article.entity.class%
+            - "@editor.category.manager"
         tags:
             - {name: form.type, alias: %editor.article.edition.form.type.name%}
         #factory_method: createNamed

@@ -88,10 +88,10 @@ class EditorialContent implements EditorialContentInterface
     protected $authors;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Bloq\Common\EditorBundle\Entity\Category")
-     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     * @ORM\Column(type="integer", nullable=true)
+     * @var integer
      */
-    protected $category;
+    protected $categoryId;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -523,9 +523,9 @@ class EditorialContent implements EditorialContentInterface
      *
      * @return category.
      */
-    public function getCategory()
+    public function getCategoryId()
     {
-        return $this->category;
+        return $this->categoryId;
     }
     
     /**
@@ -533,29 +533,9 @@ class EditorialContent implements EditorialContentInterface
      *
      * @param category the value to set.
      */
-    public function setCategory($category)
+    public function setCategoryId($categoryId)
     {
-        $this->category = $category;
-    }
-    
-    /**
-     * Get section.
-     *
-     * @return section.
-     */
-    public function getSection()
-    {
-        return $this->section;
-    }
-    
-    /**
-     * Set section.
-     *
-     * @param section the value to set.
-     */
-    public function setSection($section)
-    {
-        $this->section = $section;
+        $this->categoryId = $categoryId;
     }
     
     /**

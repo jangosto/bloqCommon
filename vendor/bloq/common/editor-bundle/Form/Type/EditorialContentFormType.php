@@ -11,14 +11,16 @@ use Bloq\Common\MultimediaBundle\Form\Type\MultimediaFormType as MultimediaFormT
 
 class EditorialContentFormType extends AbstractType
 {
-	private $class;
+    private $class;
+    private $categoryManager;
 
 	/**
 	 * @param string $class The Article class name
 	 */
-	public function __construct($class)
+	public function __construct($class, $categoryManager)
 	{
-		$this->class = $class;
+        $this->class = $class;
+        $this->categoryManager = $categoryManager;
 	}
 
 	public function buildForm(FormBuilderInterface $builder, array $options)
@@ -70,25 +72,51 @@ class EditorialContentFormType extends AbstractType
                     //'attr'      => array('class' => 'subtitle-box')
                 )
             ))
-            ->add('category', 'entity', array(
-                'class' => 'Bloq\Common\EditorBundle\Entity\Category',
+            ->add('categoryId', 'choice', array(
                 'required' => false,
-                'property' => 'name',
+                'choices' => $this->getCategories(),
                 'multiple' => false
             ))
             ->add('useCategoryAsPretitle', 'checkbox', array(
                 'label' => 'Usar categoría como antetítulo',
                 'required' => false
             ))
-            ->add('tags', 'entity', array(
+/*            ->add('tags', 'entity', array(
                 'class' => 'Bloq\Common\EditorBundle\Entity\Tag',
                 'required' => false,
                 'property' => 'name',
                 'multiple' => true
             ))
+*/
             ->add('save', 'submit', array())
             ->add('publish', 'submit', array());
-	}
+    }
+
+
+    private function getCategories()
+    {
+        $categoriesArray = array();
+        $this->getElementsArrayWithHierarchy($this->categoryManager->getAllWithHierarchy(true), $categoriesArray);
+
+        return $categoriesArray;
+    }
+
+    private function getElementsArrayWithHierarchy($elements, &$elementsArray, $level = 0)
+    {
+        $i = $level;
+        $levelator = "";
+        while ($i > 0) {
+            $levelator .= "-";
+            $i--;
+        }
+
+        foreach ($elements as $element) {
+            $elementsArray[$element->getId()] = $levelator." ".$element->getName();
+            if ($element->getChildren() !== null && count($element->getChildren()) > 0) {
+                $this->getElementsArrayWithHierarchy($element->getChildren(), $elementsArray, $level+2);
+            }
+        }
+    }
 
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
