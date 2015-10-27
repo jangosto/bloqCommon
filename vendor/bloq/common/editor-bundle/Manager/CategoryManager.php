@@ -130,6 +130,11 @@ class CategoryManager
         $this->save($content);
     }
 
+    public function cleanup()
+    {
+        $this->em->clear();
+    }
+
     public function getAllWithHierarchy($onlyEnabled = false)
     {
         if ($onlyEnabled === true) {

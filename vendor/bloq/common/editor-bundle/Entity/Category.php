@@ -4,6 +4,7 @@ namespace Bloq\Common\EditorBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Bloq\Common\EditorBundle\Entity\EditorialContentInterface;
 
 
 /**
@@ -54,6 +55,26 @@ class Category
      */
     protected $children;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="EditorialContentInterface", mappedBy="categories")
+     */
+    protected $contents;
+
+
+    public function __construct()
+    {
+        $contents = new ArrayCollection();
+    }
+
+    public function addContent(EditorialContentInterface $content)
+    {
+        $this->contents[] = $content;
+    }
+
+    public function removeContent(EditorialContentInterface $content)
+    {
+        $this->contents->remove($content);
+    }
 
     /**
      * Get id.
@@ -193,5 +214,25 @@ class Category
     public function setChildren($children)
     {
         $this->children = $children;
+    }
+    
+    /**
+     * Get contents.
+     *
+     * @return contents.
+     */
+    public function getContents()
+    {
+        return $this->contents;
+    }
+    
+    /**
+     * Set contents.
+     *
+     * @param contents the value to set.
+     */
+    public function setContents($contents)
+    {
+        $this->contents = $contents;
     }
 }

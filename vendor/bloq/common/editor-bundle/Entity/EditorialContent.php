@@ -5,6 +5,8 @@ namespace Bloq\Common\EditorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Bloq\Common\EditorBundle\Entity\Url;
+use Bloq\Common\EditorBundle\Entity\Category;
+use Bloq\Common\EditorBundle\Entity\Tag;
 use Bloq\Common\EditorBundle\Entity\EditorialContentInterface;
 
 
@@ -34,6 +36,12 @@ class EditorialContent implements EditorialContentInterface
      * @var string
      */
     protected $type;
+
+    /**
+     * @ORM\Column(type="integer", nullable=false)
+     * @var integer
+     */
+    protected $sectionId;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -88,10 +96,14 @@ class EditorialContent implements EditorialContentInterface
     protected $authors;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @var integer
+     * @ORM\ManyToMany(targetEntity="Category", inversedBy="contents")
+     * @ORM\JoinTable(
+     *      name="contents_categories",
+     *      joinColumns={@ORM\JoinColumn(name="content_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id")}
+     * )
      */
-    protected $categoryId;
+    protected $categories;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -110,7 +122,7 @@ class EditorialContent implements EditorialContentInterface
      *      name="contents_tags",
      *      joinColumns={@ORM\JoinColumn(name="content_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")}
-     *      )
+     * )
      */
     protected $tags;
 
@@ -145,6 +157,7 @@ class EditorialContent implements EditorialContentInterface
         $this->subtitles = array();
         $this->summaries = array();
         $this->urls = new ArrayCollection();
+        $this->categories = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->multimedias = new ArrayCollection();
     }
@@ -252,10 +265,32 @@ class EditorialContent implements EditorialContentInterface
      */
     public function removeUrl(Url $url)
     {
-        $this->urls->remove($url);
+        $this->urls->removeElement($url);
         $url->setContent(null);
 
         return $this;
+    }
+
+    /**
+     * Add category
+     *
+     * @param Category category
+     */
+    public function addCategory(Category $category)
+    {
+        $category->addContent($this);
+        $this->categories[] = $category;
+    }
+
+    /**
+     * Remove category
+     *
+     * @param Category category
+     */
+    public function removeCategory(Category $category)
+    {
+        $this->categories->remove($category);
+        $category->removeContent($this);
     }
 
     /**
@@ -519,23 +554,23 @@ class EditorialContent implements EditorialContentInterface
     }
     
     /**
-     * Get category.
+     * Get categories.
      *
-     * @return category.
+     * @return categories.
      */
-    public function getCategoryId()
+    public function getCategories()
     {
-        return $this->categoryId;
+        return $this->categories;
     }
     
     /**
-     * Set category.
+     * Set categories.
      *
-     * @param category the value to set.
+     * @param categories the value to set.
      */
-    public function setCategoryId($categoryId)
+    public function setCategories($categories)
     {
-        $this->categoryId = $categoryId;
+        $this->categories = $categories;
     }
     
     /**
@@ -596,6 +631,26 @@ class EditorialContent implements EditorialContentInterface
     public function setSummaries($summaries)
     {
         $this->summaries = $summaries;
+    }
+    
+    /**
+     * Get sectionId.
+     *
+     * @return sectionId.
+     */
+    public function getSectionId()
+    {
+        return $this->sectionId;
+    }
+    
+    /**
+     * Set sectionId.
+     *
+     * @param sectionId the value to set.
+     */
+    public function setSectionId($sectionId)
+    {
+        $this->sectionId = $sectionId;
     }
 }
 

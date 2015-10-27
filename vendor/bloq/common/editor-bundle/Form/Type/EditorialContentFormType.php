@@ -72,10 +72,18 @@ class EditorialContentFormType extends AbstractType
                     //'attr'      => array('class' => 'subtitle-box')
                 )
             ))
-            ->add('categoryId', 'choice', array(
-                'required' => false,
+            ->add('sectionId', 'choice', array(
+                'required' => true,
                 'choices' => $this->getCategories(),
                 'multiple' => false
+            ))
+            ->add('categories', 'entity', array(
+                'class' => 'Bloq\Common\EditorBundle\Entity\Category',
+                'by_reference' => false,
+                'required' => false,
+                'property' => 'name',
+                'expanded' => true,
+                'multiple' => true
             ))
             ->add('useCategoryAsPretitle', 'checkbox', array(
                 'label' => 'Usar categoría como antetítulo',
