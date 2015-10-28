@@ -97,6 +97,16 @@ class CategoryManager
         return $object->getId();
     }
 
+    public function saveCollection($objectsCollection)
+    {
+        foreach ($objectsCollection as $object) {
+            //if ($this->repository->find($object->getId()) == null) {
+                ladybug_dump($objectsCollection);
+            //}
+        }
+        $this->em->flush();
+    }
+
     public function disableById($id)
     {
         $content = $this->repository
