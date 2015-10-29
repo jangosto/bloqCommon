@@ -12,15 +12,18 @@ class BloqMultimediaExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container)
     {
-        //$processor = new Processor();
-        //$configuration = new Configuration();
+        $processor = new Processor();
+        $configuration = new Configuration();
 
-        //$config = $processor->processConfiguration($configuration, $configs);
+        $config = $processor->processConfiguration($configuration, $configs);
 
         $loader = new YamlFileLoader(
             $container,
             new FileLocator(__DIR__.'/../Resources/config')
         );
         $loader->load('services.yml');
+
+        $container->setParameter('multimedia.images.root_dir.path', $config['images']['root_dir_path']);
+        $container->setParameter('multimedia.images.root_dir.url', $config['images']['root_dir_url']);
     }
 }

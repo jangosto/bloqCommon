@@ -10,18 +10,48 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class MultimediaFormType extends AbstractType
 {
     private $class;
+    private $imagesRootDirPath;
+    private $imagesRootDirUrl;
 
-    public function __construct($class)
+    public function __construct($class, $imagesRootDirPath, $imagesRootDirUrl)
     {
         $this->class = $class;
+        $this->imagesRootDirPath = $imagesRootDirPath;
+        $this->imagesRootDirUrl = $imagesRootDirUrl;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $option)
     {
         $builder
-            ->add('file', 'file', array(
+/*            ->add('file', 'file', array(
                 'label' => 'form.file',
                 'required' => false
+            ))*/
+            ->add('image', 'comur_image', array(
+                'uploadConfig' => array(
+                    //'uploadRoute' => 'comur_api_upload',        //optional
+                    'uploadUrl' => $this->imagesRootDirPath,       // required - see explanation below (you can also put just a dir path)
+                    'webDir' => $this->imagesRootDirUrl,              // required - see explanation below (you can also put just a dir path)
+                    //'fileExt' => '*.jpg;*.gif;*.png;*.jpeg',    //optional
+                    //'libraryDir' => null,                       //optional
+                    //'libraryRoute' => 'comur_api_image_library', //optional
+                    //'showLibrary' => true,                      //optional
+                    //'saveOriginal' => 'originalImage'           //optional
+                ),
+                'cropConfig' => array(
+                    'minWidth' => 588,
+                    'minHeight' => 300,
+                    //'aspectRatio' => true,              //optional
+                    //'cropRoute' => 'comur_api_crop',    //optional
+                    //'forceResize' => false,             //optional
+                    'thumbs' => array(                  //optional
+                        array(
+                            'maxWidth' => '100%',
+                            'maxHeight' => 200,
+                            'useAsFieldImage' => true  //optional
+                        )
+                    )
+                )
             ))
             ->add('path', null, array(
                 'label' => 'form.path',

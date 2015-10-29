@@ -4,6 +4,9 @@ parameters:
     multimedia.multimedia.edition.form.type.class: 'Bloq\Common\MultimediaBundle\Form\Type\MultimediaFormType'
     multimedia.multimedia.edition.form.type.name: 'multimedia_multimedia_edition'
 
+    multimedia.images.root_dir.path: %multimedia.images.root_dir.path%
+    multimedia.images.root_dir.url: %multimedia.images.root_dir.url%
+
 services:
     multimedia.multimedia.manager:
         class: %multimedia.multimedia.manager.class%
@@ -15,5 +18,7 @@ services:
         class: %multimedia.multimedia.edition.form.type.class%
         arguments:
             - %multimedia.multimedia.entity.class%
+            - %multimedia.images.root_dir.path%
+            - %multimedia.images.root_dir.url%
         tags:
             - {name: form.type, alias: %multimedia.multimedia.edition.form.type.name%}

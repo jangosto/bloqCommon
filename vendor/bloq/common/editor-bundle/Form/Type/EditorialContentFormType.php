@@ -12,14 +12,16 @@ use Bloq\Common\MultimediaBundle\Form\Type\MultimediaFormType as MultimediaFormT
 class EditorialContentFormType extends AbstractType
 {
     private $class;
+    private $multimediaFormType;
     private $categoryManager;
 
 	/**
 	 * @param string $class The Article class name
 	 */
-	public function __construct($class, $categoryManager)
+	public function __construct($class, $multimediaFormType, $categoryManager)
 	{
         $this->class = $class;
+        $this->multimediaFormType = $multimediaFormType;
         $this->categoryManager = $categoryManager;
 	}
 
@@ -53,7 +55,7 @@ class EditorialContentFormType extends AbstractType
                 'required' => false
             ))
             ->add('multimedias', 'collection', array(
-                'type' => new MultimediaFormType("Bloq\Common\MultimediaBundle\Entity\Multimedia"),
+                'type' => $this->multimediaFormType,
                 'allow_add' => false,
                 'allow_delete' => false,
                 'prototype' => false,

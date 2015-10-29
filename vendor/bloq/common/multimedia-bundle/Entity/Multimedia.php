@@ -36,6 +36,16 @@ class Multimedia
     protected $file;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $image;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $originalImage;
+
+    /**
      * @ORM\Column(type="string", nullable=true)
      * @var string
      */
@@ -295,5 +305,80 @@ class Multimedia
     public function setPosition($position)
     {
         $this->position = $position;
+    }
+    
+    /**
+     * Get originalImage.
+     *
+     * @return originalImage.
+     */
+    public function getOriginalImage()
+    {
+        return $this->originalImage;
+    }
+    
+    /**
+     * Set originalImage.
+     *
+     * @param originalImage the value to set.
+     */
+    public function setOriginalImage($originalImage)
+    {
+        $this->originalImage = $originalImage;
+    }
+
+    public function isOriginalImage($image)
+    {
+        $response = false;
+        if ($image === $this->originalImage) {
+            $response = true;
+        }
+
+        return $response;
+    }
+
+    public function hasOriginalImage()
+    {
+        $response = false;
+        if (strlen($this->originalImage) > 0) {
+            $response = true;
+        }
+
+        return $response;
+    }
+    
+    /**
+     * Get image.
+     *
+     * @return image.
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+    
+    /**
+     * Set image.
+     *
+     * @param image the value to set.
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
+
+    public function isImage()
+    {
+        return true;
+    }
+
+    public function hasImage()
+    {
+        $response = false;
+        if (strlen($this->image) > 0) {
+            $response = true;
+        }
+
+        return $response;
     }
 }
