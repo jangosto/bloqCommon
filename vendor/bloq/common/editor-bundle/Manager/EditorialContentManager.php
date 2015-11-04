@@ -59,10 +59,12 @@ class EditorialContentManager
         return $content[0];
     }
 
-    public function save($object)
+    public function saveEditorialContent($object, $andFlush = true)
     {
         $this->em->persist($object);
-        $this->em->flush();
+        if ($andFlush) {
+            $this->em->flush();
+        }
 
         return $object->getId();
     }
@@ -90,5 +92,13 @@ class EditorialContentManager
     public function cleanup()
     {
         $this->em->clear();
+    }
+
+    public function createEditorialContent()
+    {
+        $class = $this->getClass();
+        $content = new $class;
+
+        return $content;
     }
 }

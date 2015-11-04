@@ -96,14 +96,9 @@ class EditorialContent implements EditorialContentInterface
     protected $authors;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Category", inversedBy="contents")
-     * @ORM\JoinTable(
-     *      name="contents_categories",
-     *      joinColumns={@ORM\JoinColumn(name="content_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id")}
-     * )
+     * @var array
      */
-    protected $categories;
+    protected $categoryIds;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -157,7 +152,7 @@ class EditorialContent implements EditorialContentInterface
         $this->subtitles = array();
         $this->summaries = array();
         $this->urls = new ArrayCollection();
-        $this->categories = new ArrayCollection();
+        $this->categoryIds = array();
         $this->tags = new ArrayCollection();
         $this->multimedias = new ArrayCollection();
     }
@@ -276,10 +271,11 @@ class EditorialContent implements EditorialContentInterface
      *
      * @param Category category
      */
-    public function addCategory(Category $category)
+    public function addCategoryId($categoryId)
     {
-        $category->addContent($this);
-        $this->categories[] = $category;
+        $this->categoryIds[] = $categoryId;
+
+        return $this;
     }
 
     /**
@@ -287,10 +283,14 @@ class EditorialContent implements EditorialContentInterface
      *
      * @param Category category
      */
-    public function removeCategory(Category $category)
+    public function removeCategoryId($categoryId)
     {
-        $this->categories->remove($category);
-        $category->removeContent($this);
+        if ($key = array_search($categoryId, $this->categoryIds) !== false) {
+            unset($this->categoryIds[$key]);
+            $this->categoryIds = array_values($this->categoryIds);
+        }
+
+        return $this;
     }
 
     /**
@@ -554,23 +554,23 @@ class EditorialContent implements EditorialContentInterface
     }
     
     /**
-     * Get categories.
+     * Get categoryIds.
      *
-     * @return categories.
+     * @return categoryIds.
      */
-    public function getCategories()
+    public function getCategoryIds()
     {
-        return $this->categories;
+        return $this->categoryIds;
     }
     
     /**
-     * Set categories.
+     * Set categoryIds.
      *
-     * @param categories the value to set.
+     * @param categoryIds the value to set.
      */
-    public function setCategories($categories)
+    public function setCategoryIds($categoryIds)
     {
-        $this->categories = $categories;
+        $this->categoryIds = $categoryIds;
     }
     
     /**

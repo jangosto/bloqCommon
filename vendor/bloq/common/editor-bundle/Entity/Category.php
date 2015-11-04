@@ -5,11 +5,12 @@ namespace Bloq\Common\EditorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Bloq\Common\EditorBundle\Entity\EditorialContentInterface;
-
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="category")
+ * @UniqueEntity("slug")
  */
 class Category
 {
@@ -56,24 +57,31 @@ class Category
     protected $children;
 
     /**
-     * @ORM\ManyToMany(targetEntity="EditorialContentInterface", mappedBy="categories")
+     * @var array
      */
-    protected $contents;
+    protected $contentIds;
 
 
     public function __construct()
     {
-        $contents = new ArrayCollection();
+        $contentIds = array();
     }
 
-    public function addContent(EditorialContentInterface $content)
+    public function addContentId($contentiId)
     {
-        $this->contents[] = $content;
+        $this->contentIds[] = $contentId;
+
+        return $this;
     }
 
-    public function removeContent(EditorialContentInterface $content)
+    public function removeContentId($contentId)
     {
-        $this->contents->remove($content);
+        if ($key = array_search($contentId, $this->contentIds) !== false) {
+            unset($this->contentIds[$key]);
+            $this->contentIds = array_values($this->contentIds);
+        }
+
+        return $this;
     }
 
     /**
