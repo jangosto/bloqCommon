@@ -4,11 +4,13 @@ namespace Bloq\Common\EditorBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-
+use Bloq\Common\EditorBundle\Entity\EditorialContentInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="category")
+ * @UniqueEntity("slug")
  */
 class Category
 {
@@ -54,6 +56,33 @@ class Category
      */
     protected $children;
 
+    /**
+     * @var array
+     */
+    protected $contentIds;
+
+
+    public function __construct()
+    {
+        $contentIds = array();
+    }
+
+    public function addContentId($contentiId)
+    {
+        $this->contentIds[] = $contentId;
+
+        return $this;
+    }
+
+    public function removeContentId($contentId)
+    {
+        if ($key = array_search($contentId, $this->contentIds) !== false) {
+            unset($this->contentIds[$key]);
+            $this->contentIds = array_values($this->contentIds);
+        }
+
+        return $this;
+    }
 
     /**
      * Get id.
@@ -193,5 +222,25 @@ class Category
     public function setChildren($children)
     {
         $this->children = $children;
+    }
+    
+    /**
+     * Get contents.
+     *
+     * @return contents.
+     */
+    public function getContents()
+    {
+        return $this->contents;
+    }
+    
+    /**
+     * Set contents.
+     *
+     * @param contents the value to set.
+     */
+    public function setContents($contents)
+    {
+        $this->contents = $contents;
     }
 }

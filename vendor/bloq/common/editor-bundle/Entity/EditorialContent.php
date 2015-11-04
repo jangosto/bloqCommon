@@ -5,6 +5,8 @@ namespace Bloq\Common\EditorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Bloq\Common\EditorBundle\Entity\Url;
+use Bloq\Common\EditorBundle\Entity\Category;
+use Bloq\Common\EditorBundle\Entity\Tag;
 use Bloq\Common\EditorBundle\Entity\EditorialContentInterface;
 
 
@@ -34,6 +36,12 @@ class EditorialContent implements EditorialContentInterface
      * @var string
      */
     protected $type;
+
+    /**
+     * @ORM\Column(type="integer", nullable=false)
+     * @var integer
+     */
+    protected $sectionId;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -88,10 +96,9 @@ class EditorialContent implements EditorialContentInterface
     protected $authors;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @var integer
+     * @var array
      */
-    protected $categoryId;
+    protected $categoryIds;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -110,7 +117,7 @@ class EditorialContent implements EditorialContentInterface
      *      name="contents_tags",
      *      joinColumns={@ORM\JoinColumn(name="content_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")}
-     *      )
+     * )
      */
     protected $tags;
 
@@ -145,6 +152,7 @@ class EditorialContent implements EditorialContentInterface
         $this->subtitles = array();
         $this->summaries = array();
         $this->urls = new ArrayCollection();
+        $this->categoryIds = array();
         $this->tags = new ArrayCollection();
         $this->multimedias = new ArrayCollection();
     }
@@ -252,8 +260,35 @@ class EditorialContent implements EditorialContentInterface
      */
     public function removeUrl(Url $url)
     {
-        $this->urls->remove($url);
+        $this->urls->removeElement($url);
         $url->setContent(null);
+
+        return $this;
+    }
+
+    /**
+     * Add category
+     *
+     * @param Category category
+     */
+    public function addCategoryId($categoryId)
+    {
+        $this->categoryIds[] = $categoryId;
+
+        return $this;
+    }
+
+    /**
+     * Remove category
+     *
+     * @param Category category
+     */
+    public function removeCategoryId($categoryId)
+    {
+        if ($key = array_search($categoryId, $this->categoryIds) !== false) {
+            unset($this->categoryIds[$key]);
+            $this->categoryIds = array_values($this->categoryIds);
+        }
 
         return $this;
     }
@@ -519,23 +554,23 @@ class EditorialContent implements EditorialContentInterface
     }
     
     /**
-     * Get category.
+     * Get categoryIds.
      *
-     * @return category.
+     * @return categoryIds.
      */
-    public function getCategoryId()
+    public function getCategoryIds()
     {
-        return $this->categoryId;
+        return $this->categoryIds;
     }
     
     /**
-     * Set category.
+     * Set categoryIds.
      *
-     * @param category the value to set.
+     * @param categoryIds the value to set.
      */
-    public function setCategoryId($categoryId)
+    public function setCategoryIds($categoryIds)
     {
-        $this->categoryId = $categoryId;
+        $this->categoryIds = $categoryIds;
     }
     
     /**
@@ -596,6 +631,26 @@ class EditorialContent implements EditorialContentInterface
     public function setSummaries($summaries)
     {
         $this->summaries = $summaries;
+    }
+    
+    /**
+     * Get sectionId.
+     *
+     * @return sectionId.
+     */
+    public function getSectionId()
+    {
+        return $this->sectionId;
+    }
+    
+    /**
+     * Set sectionId.
+     *
+     * @param sectionId the value to set.
+     */
+    public function setSectionId($sectionId)
+    {
+        $this->sectionId = $sectionId;
     }
 }
 
