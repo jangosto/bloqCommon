@@ -13,14 +13,16 @@ class EditorialContentFormType extends AbstractType
 {
     private $class;
     private $categoryManager;
+    private $tagManager;
 
 	/**
 	 * @param string $class The Article class name
 	 */
-	public function __construct($class, $categoryManager)
+	public function __construct($class, $categoryManager, $tagManager)
 	{
         $this->class = $class;
         $this->categoryManager = $categoryManager;
+        $this->tagManager = $tagManager;
 	}
 
 	public function buildForm(FormBuilderInterface $builder, array $options)
@@ -83,19 +85,22 @@ class EditorialContentFormType extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
                 'empty_value' => 'Selecciona categorias',
-                'empty_data' => false
+                'empty_data' => false,
+                'data' => array(3, 5)
             ))
             ->add('useCategoryAsPretitle', 'checkbox', array(
                 'label' => 'Usar categoría como antetítulo',
                 'required' => false
             ))
-/*            ->add('tags', 'entity', array(
-                'class' => 'Bloq\Common\EditorBundle\Entity\Tag',
+            ->add('tagIds', 'choice', array(
                 'required' => false,
-                'property' => 'name',
-                'multiple' => true
+                'choices' => $this->getTags(),
+                'expanded' => true,
+                'multiple' => true,
+                'empty_value' => 'Selecciona categorias',
+                'empty_data' => false
             ))
-*/
+
             ->add('save', 'submit', array())
             ->add('publish', 'submit', array());
     }
@@ -107,6 +112,14 @@ class EditorialContentFormType extends AbstractType
         $this->getElementsArrayWithHierarchy($this->categoryManager->getAllWithHierarchy(true), $categoriesArray, 0, $withLevelator);
         
         return $categoriesArray;
+    }
+
+    private function getTags($withLevelator = false)
+    {
+        $tagsArray = array();
+        $this->getElementsArrayWithHierarchy($this->tagManager->getAllWithHierarchy(true), $tagsArray, 0, $withLevelator);
+
+        return $tagsArray;
     }
 
     private function getElementsArrayWithHierarchy($elements, &$elementsArray, $level = 0, $withLevelator = false)
