@@ -32,14 +32,20 @@ class ContentsCategoriesManager
                 array('contentId' => $content->getId())
             );
 
+        if ($content->getCategoryIds() === null) {
+            $categoryIds = array();
+        } else {
+            $categoryIds = $content->getCategoryIds();
+        }
+
         foreach ($relationships as $relationship) {
-            if (array_search($relationship->getCategoryId(), $content->getCategoryIds()) === false) {
+            if (array_search($relationship->getCategoryId(), $categoryIds) === false) {
                 $this->em->remove($relationship);
                 $this->em->flush();
             }
         }
 
-        foreach ($content->getCategoryIds() as $categoryId) {
+        foreach ($categoryIds as $categoryId) {
             $exists = false;
             foreach ($relationships as $relationship) {
                 if ($relationship->getCategoryId() == $categoryId) {

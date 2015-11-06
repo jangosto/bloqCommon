@@ -32,14 +32,20 @@ class ContentsTagsManager
                 array('contentId' => $content->getId())
             );
 
+        if ($content->getTagIds() === null) {
+            $tagIds = array();
+        } else {
+            $tagIds = $content->getTagIds();
+        }
+
         foreach ($relationships as $relationship) {
-            if (array_search($relationship->getTagId(), $content->getTagIds()) === false) {
+            if (array_search($relationship->getTagId(), $tagIds) === false) {
                 $this->em->remove($relationship);
                 $this->em->flush();
             }
         }
 
-        foreach ($content->getTagIds() as $tagId) {
+        foreach ($tagIds as $tagId) {
             $exists = false;
             foreach ($relationships as $relationship) {
                 if ($relationship->getTagId() == $tagId) {
