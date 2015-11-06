@@ -48,14 +48,27 @@ class TagFormType extends AbstractType
 
     private function getTags()
     {
-        $tags = $this->tagManager->getAll();
-
         $tagsArray = array();
-        foreach ($tags as $tag) {
-            $tagsArray[$tag->getId()] = $tag->getName();
-        }
+        $this->getElementsArrayWithHierarchy($this->tagManager->getAllWithHierarchy(), $tagsArray);
 
         return $tagsArray;
+    }
+
+    private function getElementsArrayWithHierarchy($elements, &$elementsArray, $level = 0)
+    {
+        $i = $level;
+        $levelator = "";
+        while ($i > 0) {
+            $levelator .= "-";
+            $i--;
+        }
+
+        foreach ($elements as $element) {
+            $elementsArray[$element->getId()] = $levelator." ".$element->getName();
+            if ($element->getChildren() !== null && count($element->getChildren()) > 0) {
+                $this->getElementsArrayWithHierarchy($element->getChildren(), $elementsArray, $level+2);
+            }
+        }
     }
 
 	public function setDefaultOptions(OptionsResolverInterface $resolver)

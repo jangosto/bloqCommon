@@ -130,6 +130,11 @@ class CategoryManager
         $this->save($content);
     }
 
+    public function cleanup()
+    {
+        $this->em->clear();
+    }
+
     public function getAllWithHierarchy($onlyEnabled = false)
     {
         if ($onlyEnabled === true) {
@@ -145,7 +150,8 @@ class CategoryManager
         return $this->buildTree($contents);
     }
 
-    private function buildTree($elements, $parentId = 0) {
+    private function buildTree($elements, $parentId = 0)
+    {
         $branch = array();
 
         foreach ($elements as $element) {

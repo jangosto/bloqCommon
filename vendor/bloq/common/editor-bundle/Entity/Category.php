@@ -4,7 +4,7 @@ namespace Bloq\Common\EditorBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-
+use Bloq\Common\EditorBundle\Entity\EditorialContentInterface;
 
 /**
  * @ORM\Entity
@@ -54,6 +54,33 @@ class Category
      */
     protected $children;
 
+    /**
+     * @var array
+     */
+    protected $contentIds;
+
+
+    public function __construct()
+    {
+        $this->contentIds = array();
+    }
+
+    public function addContentId($contentiId)
+    {
+        $this->contentIds[] = $contentId;
+
+        return $this;
+    }
+
+    public function removeContentId($contentId)
+    {
+        if ($key = array_search($contentId, $this->contentIds) !== false) {
+            unset($this->contentIds[$key]);
+            $this->contentIds = array_values($this->contentIds);
+        }
+
+        return $this;
+    }
 
     /**
      * Get id.
@@ -193,5 +220,25 @@ class Category
     public function setChildren($children)
     {
         $this->children = $children;
+    }
+    
+    /**
+     * Get contentIds.
+     *
+     * @return contentIds.
+     */
+    public function getContentIds()
+    {
+        return $this->contentIds;
+    }
+    
+    /**
+     * Set contentIds.
+     *
+     * @param contentIds the value to set.
+     */
+    public function setContentIds($contentIds)
+    {
+        $this->contentIds = $contentIds;
     }
 }

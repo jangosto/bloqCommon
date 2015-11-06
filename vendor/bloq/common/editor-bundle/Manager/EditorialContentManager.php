@@ -6,15 +6,22 @@ class EditorialContentManager
 {
     const DOCTRINE_ENTITY_MANAGER_CLASS = "Doctrine\\ORM\\EntityManager";
     const DOCTRINE_SERVICE_CLASS = "Doctrine\\Bundle\\DoctrineBundle\\Registry";
+    const CATEGORY_ENTITY_CALSS = "Bloq\\Common\\EditorBundle\\Entity\\Category";
+    const TAG_ENTITY_CALSS = "Bloq\\Common\\EditorBundle\\Entity\\Tag";
 
     protected $em;
     protected $repository;
+    protected $categoryRepository;
+    protected $tagRepository;
     protected $class;
 
     public function __construct($doctrine, $class)
     {
         $doctrineServiceClass = self::DOCTRINE_SERVICE_CLASS;
         $doctrineEntityManager = self::DOCTRINE_ENTITY_MANAGER_CLASS;
+
+        $categoryEntityClass = self::CATEGORY_ENTITY_CALSS;
+        $tagEntityClass = self::TAG_ENTITY_CALSS;
 
         if ($doctrine instanceof $doctrineEntityManager) {
             $this->em = $doctrine;
@@ -23,6 +30,7 @@ class EditorialContentManager
         }
         $this->class = $class;
         $this->repository = $this->em->getRepository($this->class);
+        $this->categoryRepository = $this->em->getRepository($categoryEntityClass);
     }
 
     public function getAll()
@@ -51,10 +59,12 @@ class EditorialContentManager
         return $content[0];
     }
 
-    public function save($object)
+    public function saveEditorialContent($object, $andFlush = true)
     {
         $this->em->persist($object);
-        $this->em->flush();
+        if ($andFlush) {
+            $this->em->flush();
+        }
 
         return $object->getId();
     }
@@ -77,5 +87,18 @@ class EditorialContentManager
             );
 
         return $contents;
+    }
+
+    public function cleanup()
+    {
+        $this->em->clear();
+    }
+
+    public function createEditorialContent()
+    {
+        $class = $this->getClass();
+        $content = new $class;
+
+        return $content;
     }
 }
