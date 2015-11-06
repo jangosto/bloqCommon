@@ -13,14 +13,20 @@ class EditorialContentFormType extends AbstractType
 {
     private $class;
     private $categoryManager;
+    private $tagManager;
+    private $assignedCategories;
+    private $assignedTags;
 
 	/**
 	 * @param string $class The Article class name
 	 */
-	public function __construct($class, $categoryManager)
+	public function __construct($class, $categoryManager, $tagManager)
 	{
         $this->class = $class;
         $this->categoryManager = $categoryManager;
+        $this->tagManager = $tagManager;
+        $this->assignedCategories = array();
+        $this->assignedTags = array();
 	}
 
 	public function buildForm(FormBuilderInterface $builder, array $options)
@@ -82,20 +88,19 @@ class EditorialContentFormType extends AbstractType
                 'choices' => $this->getCategories(),
                 'expanded' => true,
                 'multiple' => true,
-                'empty_value' => 'Selecciona categorias',
-                'empty_data' => false
+                'data' => $this->assignedCategories
             ))
             ->add('useCategoryAsPretitle', 'checkbox', array(
                 'label' => 'Usar categoría como antetítulo',
                 'required' => false
             ))
-/*            ->add('tags', 'entity', array(
-                'class' => 'Bloq\Common\EditorBundle\Entity\Tag',
+            ->add('tagIds', 'choice', array(
                 'required' => false,
-                'property' => 'name',
-                'multiple' => true
+                'choices' => $this->getTags(),
+                'expanded' => true,
+                'multiple' => true,
+                'data' => $this->assignedTags
             ))
-*/
             ->add('save', 'submit', array())
             ->add('publish', 'submit', array());
     }
@@ -107,6 +112,14 @@ class EditorialContentFormType extends AbstractType
         $this->getElementsArrayWithHierarchy($this->categoryManager->getAllWithHierarchy(true), $categoriesArray, 0, $withLevelator);
         
         return $categoriesArray;
+    }
+
+    private function getTags($withLevelator = false)
+    {
+        $tagsArray = array();
+        $this->getElementsArrayWithHierarchy($this->tagManager->getAllWithHierarchy(true), $tagsArray, 0, $withLevelator);
+
+        return $tagsArray;
     }
 
     private function getElementsArrayWithHierarchy($elements, &$elementsArray, $level = 0, $withLevelator = false)
@@ -140,4 +153,44 @@ class EditorialContentFormType extends AbstractType
 	{
 		return 'editor_editorial_content_edition';
 	}
+    
+    /**
+     * Get assignedCategories.
+     *
+     * @return assignedCategories.
+     */
+    public function getAssignedCategories()
+    {
+        return $this->assignedCategories;
+    }
+    
+    /**
+     * Set assignedCategories.
+     *
+     * @param assignedCategories the value to set.
+     */
+    public function setAssignedCategories($assignedCategories)
+    {
+        $this->assignedCategories = $assignedCategories;
+    }
+    
+    /**
+     * Get assignedTags.
+     *
+     * @return assignedTags.
+     */
+    public function getAssignedTags()
+    {
+        return $this->assignedTags;
+    }
+    
+    /**
+     * Set assignedTags.
+     *
+     * @param assignedTags the value to set.
+     */
+    public function setAssignedTags($assignedTags)
+    {
+        $this->assignedTags = $assignedTags;
+    }
 }

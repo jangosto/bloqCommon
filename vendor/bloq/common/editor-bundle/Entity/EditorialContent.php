@@ -112,14 +112,9 @@ class EditorialContent implements EditorialContentInterface
     protected $urls;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Bloq\Common\EditorBundle\Entity\Tag")
-     * @ORM\JoinTable(
-     *      name="contents_tags",
-     *      joinColumns={@ORM\JoinColumn(name="content_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")}
-     * )
+     * @var array
      */
-    protected $tags;
+    protected $tagIds;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -153,7 +148,7 @@ class EditorialContent implements EditorialContentInterface
         $this->summaries = array();
         $this->urls = new ArrayCollection();
         $this->categoryIds = array();
-        $this->tags = new ArrayCollection();
+        $this->tags = array();
         $this->multimedias = new ArrayCollection();
     }
 
@@ -288,6 +283,33 @@ class EditorialContent implements EditorialContentInterface
         if ($key = array_search($categoryId, $this->categoryIds) !== false) {
             unset($this->categoryIds[$key]);
             $this->categoryIds = array_values($this->categoryIds);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Add tag
+     *
+     * @param Tag tag
+     */
+    public function addTagId($tagId)
+    {
+        $this->tagIds[] = $tagId;
+
+        return $this;
+    }
+
+    /**
+     * Remove tag
+     *
+     * @param Tag tag
+     */
+    public function removeTagId($tagId)
+    {
+        if ($key = array_search($tagId, $this->tagIds) !== false) {
+            unset($this->tagIds[$key]);
+            $this->tagIds = array_values($this->tagIds);
         }
 
         return $this;
@@ -574,23 +596,23 @@ class EditorialContent implements EditorialContentInterface
     }
     
     /**
-     * Get tags.
+     * Get tagIds.
      *
-     * @return tags.
+     * @return tagIds.
      */
-    public function getTags()
+    public function getTagIds()
     {
-        return $this->tags;
+        return $this->tagIds;
     }
     
     /**
-     * Set tags.
+     * Set tagIds.
      *
-     * @param tags the value to set.
+     * @param tagIds the value to set.
      */
-    public function setTags($tags)
+    public function setTagIds($tagIds)
     {
-        $this->tags = $tags;
+        $this->tagIds = $tagIds;
     }
     
     /**

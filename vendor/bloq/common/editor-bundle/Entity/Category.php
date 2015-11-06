@@ -5,12 +5,10 @@ namespace Bloq\Common\EditorBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Bloq\Common\EditorBundle\Entity\EditorialContentInterface;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="category")
- * @UniqueEntity("slug")
  */
 class Category
 {
@@ -64,7 +62,7 @@ class Category
 
     public function __construct()
     {
-        $contentIds = array();
+        $this->contentIds = array();
     }
 
     public function addContentId($contentiId)
@@ -225,22 +223,22 @@ class Category
     }
     
     /**
-     * Get contents.
+     * Get contentIds.
      *
-     * @return contents.
+     * @return contentIds.
      */
-    public function getContents()
+    public function getContentIds()
     {
-        return $this->contents;
+        return $this->contentIds;
     }
     
     /**
-     * Set contents.
+     * Set contentIds.
      *
-     * @param contents the value to set.
+     * @param contentIds the value to set.
      */
-    public function setContents($contents)
+    public function setContentIds($contentIds)
     {
-        $this->contents = $contents;
+        $this->contentIds = $contentIds;
     }
 }

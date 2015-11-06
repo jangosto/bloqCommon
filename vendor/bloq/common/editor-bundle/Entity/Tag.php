@@ -4,7 +4,7 @@ namespace Bloq\Common\EditorBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-
+use Bloq\Common\EditorBundle\Entity\EditorialContentInterface;
 
 /**
  * @ORM\Entity
@@ -37,16 +37,11 @@ class Tag
      */
     protected $description;
 
-     /**
-      * @ORM\Column(type="integer", nullable=true)
-      * @var int
-      */
-     private $parentId;
-
     /**
-     * @ORM\ManyToMany(targetEntity="Bloq\Common\EditorBundle\Entity\EditorialContentInterface", mappedBy="tags")
+     * @ORM\Column(type="integer", nullable=true)
+     * @var int
      */
-    protected $contents;
+    private $parentId;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -54,9 +49,37 @@ class Tag
      */
     protected $enabled;
 
+    /**
+     * @var array
+     */
+    protected $children;
 
-    public function __construct() {
-        $this->contents = new ArrayCollection();
+    /**
+     * @var array
+     */
+    protected $contentIds;
+
+
+    public function __construct()
+    {
+        $this->contentIds = array();
+    }
+
+    public function addContentId($contentiId)
+    {
+        $this->contentIds[] = $contentId;
+
+        return $this;
+    }
+
+    public function removeContentId($contentId)
+    {
+        if ($key = array_search($contentId, $this->contentIds) !== false) {
+            unset($this->contentIds[$key]);
+            $this->contentIds = array_values($this->contentIds);
+        }
+
+        return $this;
     }
 
     /**
@@ -120,26 +143,6 @@ class Tag
     }
     
     /**
-     * Get contents.
-     *
-     * @return contents.
-     */
-    public function getContents()
-    {
-        return $this->contents;
-    }
-    
-    /**
-     * Set contents.
-     *
-     * @param contents the value to set.
-     */
-    public function setContents($contents)
-    {
-        $this->contents = $contents;
-    }
-    
-    /**
      * Get description.
      *
      * @return description.
@@ -157,26 +160,6 @@ class Tag
     public function setDescription($description)
     {
         $this->description = $description;
-    }
-    
-    /**
-     * Get children.
-     *
-     * @return children.
-     */
-    public function getChildren()
-    {
-        return $this->children;
-    }
-    
-    /**
-     * Set children.
-     *
-     * @param children the value to set.
-     */
-    public function setChildren($children)
-    {
-        $this->children = $children;
     }
     
     /**
@@ -217,5 +200,45 @@ class Tag
     public function setEnabled($enabled)
     {
         $this->enabled = $enabled;
+    }
+
+    /**
+     * Get children.
+     *
+     * @return children.
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
+     * Set children.
+     *
+     * @param children the value to set.
+     */
+    public function setChildren($children)
+    {
+         $this->children = $children;
+    }
+
+    /**
+     * Get contentIds.
+     *
+     * @return contentIds.
+     */
+    public function getContentIds()
+    {
+        return $this->contentIds;
+    }
+
+    /**
+     * Set contentIds.
+     *
+     * @param contentIds the value to set.
+     */
+    public function setContentIds($contentIds)
+    {
+        $this->contentIds = $contentIds;
     }
 }

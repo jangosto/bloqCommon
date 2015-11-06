@@ -2,7 +2,7 @@
 
 namespace Bloq\Common\EditorBundle\Manager;
 
-class ContentsCategoriesManager
+class ContentsTagsManager
 {
     const DOCTRINE_ENTITY_MANAGER_CLASS = "Doctrine\\ORM\\EntityManager";
     const DOCTRINE_SERVICE_CLASS = "Doctrine\\Bundle\\DoctrineBundle\\Registry";
@@ -32,30 +32,30 @@ class ContentsCategoriesManager
                 array('contentId' => $content->getId())
             );
 
-        if ($content->getCategoryIds() === null) {
-            $categoryIds = array();
+        if ($content->getTagIds() === null) {
+            $tagIds = array();
         } else {
-            $categoryIds = $content->getCategoryIds();
+            $tagIds = $content->getTagIds();
         }
 
         foreach ($relationships as $relationship) {
-            if (array_search($relationship->getCategoryId(), $categoryIds) === false) {
+            if (array_search($relationship->getTagId(), $tagIds) === false) {
                 $this->em->remove($relationship);
                 $this->em->flush();
             }
         }
 
-        foreach ($categoryIds as $categoryId) {
+        foreach ($tagIds as $tagId) {
             $exists = false;
             foreach ($relationships as $relationship) {
-                if ($relationship->getCategoryId() == $categoryId) {
+                if ($relationship->getTagId() == $tagId) {
                     $exists = true;
                     break;
                 }
             }
             if ($exists === false) {
                 $newRelationship = new $this->class();
-                $newRelationship->setCategoryId($categoryId);
+                $newRelationship->setTagId($tagId);
                 $newRelationship->setContentId($content->getId());
                 $this->em->persist($newRelationship);
                 $this->em->flush();
@@ -63,18 +63,18 @@ class ContentsCategoriesManager
         }
     }
 
-    public function getCategoryIds($contentId)
+    public function getTagIds($contentId)
     {
         $relationships = $this->repository
             ->findBy(
                 array('contentId' => $contentId)
             );
 
-        $categoryIds = array();
+        $tagIds = array();
         foreach ($relationships as $relationship) {
-            $categoryIds[] = $relationship->getCategoryId();
+            $tagIds[] = $relationship->getTagId();
         }
 
-        return $categoryIds;
+        return $tagIds;
     }
 }
