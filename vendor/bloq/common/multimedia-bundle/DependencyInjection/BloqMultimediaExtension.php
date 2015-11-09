@@ -22,8 +22,10 @@ class BloqMultimediaExtension extends Extension
             new FileLocator(__DIR__.'/../Resources/config')
         );
         $loader->load('services.yml');
-
-        $container->setParameter('multimedia.images.root_dir.path', $config['images']['root_dir_path']);
-        $container->setParameter('multimedia.images.root_dir.url', $config['images']['root_dir_url']);
+        
+        $container->setParameter('editor.domain.path', $config['domain_path']);
+        $container->setParameter('multimedia.upload.root_dir.rel.path', $config['upload_dir']);
+        $container->setParameter('multimedia.images.root_dir.path', $config['images']['root_dir_rel_path']);
+        $container->setParameter('multimedia.images.root_dir.url', $config['images']['root_dir_rel_url']);
     }
 }

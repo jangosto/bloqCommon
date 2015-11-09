@@ -14,10 +14,12 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->scalarNode('domain_path')->isRequired(true)->end()
+                ->scalarNode('upload_dir')->isRequired(true)->end()
                 ->arrayNode('images')
                     ->children()
-                        ->scalarNode('root_dir_path')->isRequired(true)->end()
-                        ->scalarNode('root_dir_url')->isRequired(true)->end()
+                        ->scalarNode('root_dir_rel_path')->isRequired(true)->end()
+                        ->scalarNode('root_dir_rel_url')->isRequired(true)->end()
                     ->end()
                 ->end()
             ->end()

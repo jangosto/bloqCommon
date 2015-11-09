@@ -4,6 +4,7 @@ namespace Bloq\Common\MultimediaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Bloq\Common\MultimediaBundle\Lib\Globals;
 
 /**
  * @ORM\Entity
@@ -86,7 +87,33 @@ class Multimedia
      * @var string
      */
     protected $htmlCode;
-    
+
+
+    public function getImagesUploadRootDir()
+    {
+        return Globals::getDomainPath().$this->getImagesUploadDir();
+    }
+
+    public function getImagesUploadDir()
+    {
+        return Globals::getImagesUploadDir();
+    }
+
+    public function getImagesUploadDirUrl()
+    {
+        return Globals::getImagesRelUrl();
+    }
+
+    public function getImagesAbsolutePath()
+    {
+        return null === $this->image ? null : $this->getImagesUploadRootDir().'/'.$this->image;
+    }
+
+    public function getImagesWebPath()
+    {
+        return null === $this->image ? null : '/'.Globals::getImagesRelUrl().'/'.$this->image;
+    }
+
     /**
      * Get id.
      *
@@ -96,7 +123,7 @@ class Multimedia
     {
         return $this->id;
     }
-    
+
     /**
      * Set id.
      *
@@ -106,7 +133,7 @@ class Multimedia
     {
         $this->id = $id;
     }
-    
+
     /**
      * Get type.
      *
