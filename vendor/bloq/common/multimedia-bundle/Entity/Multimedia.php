@@ -89,27 +89,27 @@ class Multimedia
     protected $htmlCode;
 
 
-    public function getImagesUploadRootDir()
+    public function getUploadRootDir()
     {
-        return Globals::getDomainPath().$this->getImagesUploadDir();
+        return Globals::getDomainPath().$this->getUploadDir();
     }
 
-    public function getImagesUploadDir()
+    public function getUploadDir()
     {
         return Globals::getImagesUploadDir();
     }
 
-    public function getImagesUploadDirUrl()
+    public function getUploadDirUrl()
     {
         return Globals::getImagesRelUrl();
     }
 
-    public function getImagesAbsolutePath()
+    public function getAbsolutePath()
     {
-        return null === $this->image ? null : $this->getImagesUploadRootDir().'/'.$this->image;
+        return null === $this->image ? null : $this->getUploadRootDir().'/'.$this->image;
     }
 
-    public function getImagesWebPath()
+    public function getWebPath()
     {
         return null === $this->image ? null : '/'.Globals::getImagesRelUrl().'/'.$this->image;
     }
