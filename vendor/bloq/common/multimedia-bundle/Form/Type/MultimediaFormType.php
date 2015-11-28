@@ -24,35 +24,9 @@ class MultimediaFormType extends AbstractType
     {
         $multimedia = new $this->class();
         $builder
-/*            ->add('file', 'file', array(
+            ->add('file', 'file', array(
                 'label' => 'form.file',
                 'required' => false
-            ))*/
-            ->add('image', 'comur_image', array(
-                'uploadConfig' => array(
-                    'uploadRoute' => 'comur_api_upload',        //optional
-                    'uploadUrl' => $multimedia->getUploadRootDir(),       // required - see explanation below (you can also put just a dir path)
-                    'webDir' => $multimedia->getUploadDirUrl(),              // required - see explanation below (you can also put just a dir path)
-                    'fileExt' => '*.jpg;*.gif;*.png;*.jpeg',    //optional
-                    'libraryDir' => null,                       //optional
-                    'libraryRoute' => 'comur_api_image_library', //optional
-                    'showLibrary' => true,                      //optional
-                    'saveOriginal' => 'originalImage'           //optional
-                ),
-                'cropConfig' => array(
-                    'minWidth' => 588,
-                    'minHeight' => 300,
-                    'aspectRatio' => true,              //optional
-                    'cropRoute' => 'comur_api_crop',    //optional
-                    'forceResize' => false,             //optional
-                    'thumbs' => array(                  //optional
-                        array(
-                            'maxWidth' => '100%',
-                            'maxHeight' => 200,
-                            'useAsFieldImage' => true  //optional
-                        )
-                    )
-                )
             ))
             ->add('path', null, array(
                 'label' => 'form.path',

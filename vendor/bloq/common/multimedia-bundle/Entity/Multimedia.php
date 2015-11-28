@@ -45,7 +45,7 @@ class Multimedia
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $originalImage;
-
+    
     /**
      * @ORM\Column(type="string", nullable=true)
      * @var string
@@ -88,30 +88,39 @@ class Multimedia
      */
     protected $htmlCode;
 
-
-    public function getUploadRootDir()
+    public function getOriginalImagesRootDir()
     {
-        return Globals::getDomainPath().$this->getUploadDir();
+        return Globals::getDomainPath().$this->getOriginalImagesUploadDir();
     }
 
-    public function getUploadDir()
+    public function getImagesUploadRootDir()
+    {
+        return Globals::getDomainPath().$this->getImagesUploadDir();
+    }
+
+    public function getOriginalImagesUploadDir()
+    {
+        return Globals::getOriginalImagesUploadDir();
+    }
+
+    public function getImagesUploadDir()
     {
         return Globals::getImagesUploadDir();
     }
 
-    public function getUploadDirUrl()
+    public function getImagesUploadDirUrl()
     {
         return Globals::getImagesRelUrl();
     }
 
-    public function getAbsolutePath()
+    public function getImageAbsolutePath()
     {
-        return null === $this->image ? null : $this->getUploadRootDir().'/'.$this->image;
+        return null === $this->path ? null : $this->getImagesUploadRootDir().'/'.$this->path;
     }
 
-    public function getWebPath()
+    public function getImageWebPath()
     {
-        return null === $this->image ? null : '/'.Globals::getImagesRelUrl().'/'.$this->image;
+        return null === $this->path ? null : '/'.Globals::getImagesRelUrl().'/'.$this->path;
     }
 
     /**

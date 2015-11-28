@@ -6,6 +6,7 @@ class Globals
 {
     protected static $domainPath;
     protected static $imagesUploadDir;
+    protected static $originalImagesUploadDir;
     protected static $imagesRelUrl;
 
 
@@ -14,7 +15,7 @@ class Globals
      *
      * @return domainPath.
      */
-    public function getDomainPath()
+    public static function getDomainPath()
     {
         return self::$domainPath;
     }
@@ -24,7 +25,7 @@ class Globals
      *
      * @param domainPath the value to set.
      */
-    public function setDomainPath($domainPath)
+    public static function setDomainPath($domainPath)
     {
         self::$domainPath = $domainPath;
     }
@@ -34,7 +35,7 @@ class Globals
      *
      * @return imagesUploadDir.
      */
-    public function getImagesUploadDir()
+    public static function getImagesUploadDir()
     {
         return self::$imagesUploadDir;
     }
@@ -44,7 +45,7 @@ class Globals
      *
      * @param imagesUploadDir the value to set.
      */
-    public function setImagesUploadDir($imagesUploadDir)
+    public static function setImagesUploadDir($imagesUploadDir)
     {
         self::$imagesUploadDir = $imagesUploadDir;
     }
@@ -54,7 +55,7 @@ class Globals
      *
      * @return imagesRelUrl.
      */
-    public function getImagesRelUrl()
+    public static function getImagesRelUrl()
     {
         return self::$imagesRelUrl;
     }
@@ -64,8 +65,28 @@ class Globals
      *
      * @param imagesRelUrl the value to set.
      */
-    public function setImagesRelUrl($imagesRelUrl)
+    public static function setImagesRelUrl($imagesRelUrl)
     {
         self::$imagesRelUrl = $imagesRelUrl;
+    }
+    
+    /**
+     * Get originalImagesUploadDir.
+     *
+     * @return originalImagesUploadDir.
+     */
+    public static function getOriginalImagesUploadDir()
+    {
+        return self::$originalImagesUploadDir;
+    }
+    
+    /**
+     * Set originalImagesUploadDir.
+     *
+     * @param originalImagesUploadDir the value to set.
+     */
+    public static function setOriginalImagesUploadDir($originalImagesUploadDir)
+    {
+        self::$originalImagesUploadDir = $originalImagesUploadDir;
     }
 }

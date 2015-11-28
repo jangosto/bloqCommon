@@ -4,10 +4,22 @@ parameters:
     multimedia.multimedia.edition.form.type.class: 'Bloq\Common\MultimediaBundle\Form\Type\MultimediaFormType'
     multimedia.multimedia.edition.form.type.name: 'multimedia_multimedia_edition'
 
+    multimedia.cache.root_dir.prefix.path: %multimedia.cache.root_dir.prefix.path%
+
     multimedia.images.root_dir.path: %multimedia.images.root_dir.path%
     multimedia.images.root_dir.url: %multimedia.images.root_dir.url%
 
+    multimedia.images.image_cropper.class: 'Bloq\Common\MultimediaBundle\Publisher\ImageCropper'
+
 services:
+    multimedia.images.image_cropper:
+        class: %multimedia.images.image_cropper.class%
+        arguments:
+            - "@liip_imagine.cache.manager"
+            - "@liip_imagine.data.manager"
+            - "@liip_imagine.filter.manager"
+            - %multimedia.cache.root_dir.prefix.path%
+
     multimedia.multimedia.manager:
         class: %multimedia.multimedia.manager.class%
         arguments:
