@@ -72,4 +72,20 @@ class MultimediaManager
 
         return $object->getId();
     }
+
+    public function saveMultimediaItem($multimedia)
+    {
+        if ($multimedia->getType() == "image" && $multimedia->getFile() !== null) {
+            $uploadRootPath = $multimedia->getOriginalImagesRootDir();
+
+            $extension = $multimedia->getFile()->guessExtension();
+            $filename = rand(1, 9999999).'.'.$extension;
+            $dateDirPart = date("Y/md");
+
+            $absDir = $uploadRootPath."/".$dateDirPart;
+
+            $multimedia->getFile()->move($absDir, $filename);
+            $multimedia->setPath("/".$dateDirPart."/".$filename);
+        }
+    }
 }

@@ -10,14 +10,19 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class MultimediaFormType extends AbstractType
 {
     private $class;
+    private $imagesRootDirPath;
+    private $imagesRootDirUrl;
 
-    public function __construct($class)
+    public function __construct($class, $imagesRootDirPath, $imagesRootDirUrl)
     {
         $this->class = $class;
+        $this->imagesRootDirPath = $imagesRootDirPath;
+        $this->imagesRootDirUrl = $imagesRootDirUrl;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $option)
     {
+        $multimedia = new $this->class();
         $builder
             ->add('file', 'file', array(
                 'label' => 'form.file',

@@ -34,6 +34,7 @@ services:
         class: %editor.article.edition.form.type.class%
         arguments:
             - %editor.article.entity.class%
+            - "@multimedia.multimedia.form.type"
             - "@editor.category.manager"
             - "@editor.tag.manager"
         tags:
