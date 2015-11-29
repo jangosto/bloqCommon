@@ -23,7 +23,7 @@ class BloqMultimediaExtension extends Extension
         );
         $loader->load('services.yml');
         
-        $container->setParameter('editor.domain.path', $config['domain_path']);
+        $container->setParameter('multimedia.domain.path', $config['domain_path']);
         $container->setParameter('multimedia.upload.root_dir.rel.path', $config['upload_dir']);
         $container->setParameter('multimedia.cache.root_dir.prefix.path', $config['cache_dir_prefix']);
         $container->setParameter('multimedia.images.root_dir.path', $config['images']['root_dir_rel_path']);
