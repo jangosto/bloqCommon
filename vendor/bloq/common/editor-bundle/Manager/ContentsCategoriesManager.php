@@ -77,4 +77,22 @@ class ContentsCategoriesManager
 
         return $categoryIds;
     }
+
+    public function getContentIdsByCategoryIds(array $categoryIds, $strict = false)
+    {
+        $whereCondition = implode(" OR relationship.categoryId=", $categoryIds);
+        $whereCondition = " WHERE relationship.categoryId=".$whereCondition;
+
+        $relationships = $this->em
+            ->createQuery(
+                'SELECT relationship FROM '.$this->class.' relationship'.$whereCondition.' GROUP BY relationship.contentId'
+            )->getResult();
+
+        $contentIds = array();
+        foreach ($relationships as $relationship) {
+            $contentIds[] = $relationship->getContentId();
+        }
+
+        return $contentIds;
+    }
 }

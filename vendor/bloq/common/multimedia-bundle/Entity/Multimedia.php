@@ -120,7 +120,7 @@ class Multimedia
 
     public function getImageWebPath()
     {
-        return null === $this->path ? null : '/'.Globals::getImagesRelUrl().'/'.$this->path;
+        return null === $this->path ? null : Globals::getImagesRelUrl().$this->path;
     }
 
     /**

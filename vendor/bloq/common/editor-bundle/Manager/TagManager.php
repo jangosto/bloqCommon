@@ -65,6 +65,28 @@ class TagManager
         return $content[0];
     }
 
+    public function getByIds(array $ids)
+    {
+        $contents = null;
+
+        if(count($ids) > 0) {
+            $conditionArray = array();
+
+            foreach ($ids as $id) {
+                $conditionArray[] .= "tag.id=".$id;
+            }
+            $whereQuery = " WHERE ".implode(" OR ", $conditionArray);
+
+            $contents = $this->em->createQuery("SELECT tag FROM ".$this->class." tag".$whereQuery)->getResult();
+        }
+
+        if (null === $contents) {
+            $contents = array();
+        }
+
+        return $contents;
+    }
+
     public function getAllByParent($id)
     {
         $parentContent = $this->repository

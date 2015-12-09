@@ -29,6 +29,10 @@ services:
         arguments:
             - "@doctrine"
             - %editor.article.entity.class%
+            - "@editor.category.manager"
+            - "@editor.contents_categories.manager"
+            - "@editor.tag.manager"
+            - "@editor.contents_tags.manager"
 
     editor.article.form.type:
         class: %editor.article.edition.form.type.class%

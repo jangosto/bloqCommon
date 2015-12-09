@@ -41,7 +41,11 @@ class EditorialContentFormType extends AbstractType
 			->add('title', null, array(
 				'label' => 'form.title',
 				'required' => true
-			))
+            ))
+            ->add('seoTitle', 'checkbox', array(
+                'label' => 'Usar título SEO',
+                'required' => false
+            ))
             ->add('subtitles', 'collection', array(
                 'type' => 'text',
                 'allow_add' => true,

@@ -1,0 +1,13 @@
+parameters:
+    entities.user.model.class: %entities.user.model_class% 
+    entities.user.manager.class: Bloq\Common\EntitiesBundle\Manager\UserManager
+
+services:
+    entities.user.manager:
+        class: %entities.user.manager.class%
+        arguments:
+            - "@security.encoder_factory"
+            - "@fos_user.util.username_canonicalizer"
+            - "@fos_user.util.email_canonicalizer"
+            - "@fos_user.entity_manager"
+            - %entities.user.model.class%

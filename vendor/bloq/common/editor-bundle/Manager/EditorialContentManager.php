@@ -6,22 +6,25 @@ class EditorialContentManager
 {
     const DOCTRINE_ENTITY_MANAGER_CLASS = "Doctrine\\ORM\\EntityManager";
     const DOCTRINE_SERVICE_CLASS = "Doctrine\\Bundle\\DoctrineBundle\\Registry";
-    const CATEGORY_ENTITY_CALSS = "Bloq\\Common\\EditorBundle\\Entity\\Category";
-    const TAG_ENTITY_CALSS = "Bloq\\Common\\EditorBundle\\Entity\\Tag";
 
     protected $em;
     protected $repository;
-    protected $categoryRepository;
-    protected $tagRepository;
+    protected $categoryClass;
+    protected $categoryManager;
+    protected $ecCategoryManager;
+    protected $ecTagManager;
     protected $class;
 
-    public function __construct($doctrine, $class)
-    {
+    public function __construct(
+        $doctrine,
+        $class,
+        $categoryManager,
+        $ecCategoryManager,
+        $tagManager,
+        $ecTagManager
+    ) {
         $doctrineServiceClass = self::DOCTRINE_SERVICE_CLASS;
         $doctrineEntityManager = self::DOCTRINE_ENTITY_MANAGER_CLASS;
-
-        $categoryEntityClass = self::CATEGORY_ENTITY_CALSS;
-        $tagEntityClass = self::TAG_ENTITY_CALSS;
 
         if ($doctrine instanceof $doctrineEntityManager) {
             $this->em = $doctrine;
@@ -30,7 +33,10 @@ class EditorialContentManager
         }
         $this->class = $class;
         $this->repository = $this->em->getRepository($this->class);
-        $this->categoryRepository = $this->em->getRepository($categoryEntityClass);
+        $this->categoryManager = $categoryManager;
+        $this->ecCategoryManager = $ecCategoryManager;
+        $this->tagManager = $tagManager;
+        $this->ecTagManager = $ecTagManager;
     }
 
     public function getAll()
@@ -45,18 +51,54 @@ class EditorialContentManager
         return $contents;
     }
 
-    public function getById($id)
+    public function getById($id, $complete = false)
     {
-        $content = $this->repository
+        $contents = $this->repository
             ->findBy(
                 array("id" => $id)
             );
 
-        if (null === $content) {
+        if (null === $contents) {
             $content = null;
+        } elseif ($complete === true) {
+            $content = $contents[0];
+            $content = $this->setECCategoryIds($content);
+            $content = $this->setECTagIds($content);
+            $content = $this->setECCategories($content);
+            $content = $this->setECTags($content);
+            $content = $this->setSection($content);
+        } else {
+            $content = $contents[0];
         }
 
-        return $content[0];
+        return $content;
+    }
+
+    public function getByIds(array $ids, $limit = null)
+    {
+        $contents = null;
+
+        if(count($ids) > 0) {
+            $conditionArray = array();
+
+            foreach ($ids as $id) {
+                $conditionArray[] .= "editorial_content.id=".$id;
+            }
+            $whereQuery = " WHERE ".implode(" OR ", $conditionArray);
+
+            $query = $this->em->createQuery("SELECT editorial_content FROM ".$this->class." editorial_content".$whereQuery.'ORDER BY editorial_content.publishedDT DESC');
+            if ($limit !== null && is_int($limit)) {
+                $query->setMaxResults($limit);
+            }
+
+            $contents = $query->getResult();
+        }
+
+        if (null === $contents) {
+            $contents = array();
+        }
+
+        return $contents;
     }
 
     public function saveEditorialContent($object, $andFlush = true)
@@ -89,6 +131,24 @@ class EditorialContentManager
         return $contents;
     }
 
+    public function getByTagIds($tagIds, $limit = null)
+    {
+        $contentIds = $this->ecTagManager->getContentIdsByTagIds($content->getTagIds());
+        $contents = $this->getByIds($contentIds, $limit);
+
+        return $contents;
+    }
+
+    public function getBySameTags($content, $strict = false, $limit = null)
+    {
+        $contentIds = $this->ecTagManager->getContentIdsByTagIds($content->getTagIds());
+        unset($contentIds[array_search($content->getId(), $contentIds)]);
+
+        $contents = $this->getByIds($contentIds, $limit);
+
+        return $contents;
+    }
+
     public function cleanup()
     {
         $this->em->clear();
@@ -98,6 +158,49 @@ class EditorialContentManager
     {
         $class = $this->getClass();
         $content = new $class;
+
+        return $content;
+    }
+
+    private function setECCategoryIds($content)
+    {
+        $categoryIds = $this->ecCategoryManager->getCategoryIds($content->getId());
+        $content->setCategoryIds($categoryIds);
+
+        return $content;
+    }
+
+    private function setECTagIds($content)
+    {
+        $tagIds = $this->ecTagManager->getTagIds($content->getId());
+        $content->setTagIds($tagIds);
+
+        return $content;
+    }
+
+    private function setECCategories($content)
+    {
+        $categories = $this->categoryManager->getByIds($content->getCategoryIds());
+
+        $content->setCategories($categories);
+
+        return $content;
+    }
+
+    private function setECTags($content)
+    {
+        $tags = $this->tagManager->getByIds($content->getTagIds());
+
+        $content->setTags($tags);
+
+        return $content;
+    }
+
+    private function setSection($content)
+    {
+        $section = $this->categoryManager->getById($content->getSectionId());
+
+        $content->setSection($section);
 
         return $content;
     }

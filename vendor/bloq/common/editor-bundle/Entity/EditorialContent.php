@@ -56,6 +56,12 @@ class EditorialContent implements EditorialContentInterface
     protected $title;
 
     /**
+     * @ORM\Column(type="boolean", nullable=true)
+     * @var bool
+     */
+    protected $seoTitle;
+
+    /**
      * @ORM\Column(type="array", nullable=true)
      * @var string
      */
@@ -140,6 +146,12 @@ class EditorialContent implements EditorialContentInterface
      */
     protected $updatedDT;
 
+    protected $categories;
+
+    protected $tags;
+
+    protected $section;
+
 
     public function __construct()
     {
@@ -148,8 +160,10 @@ class EditorialContent implements EditorialContentInterface
         $this->summaries = array();
         $this->urls = new ArrayCollection();
         $this->categoryIds = array();
-        $this->tags = array();
+        $this->tagIds = array();
         $this->multimedias = new ArrayCollection();
+        $this->categories = array();
+        $this->tags = array();
     }
 
     /**
@@ -673,6 +687,86 @@ class EditorialContent implements EditorialContentInterface
     public function setSectionId($sectionId)
     {
         $this->sectionId = $sectionId;
+    }
+    
+    /**
+     * Get categories.
+     *
+     * @return categories.
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+    
+    /**
+     * Set categories.
+     *
+     * @param categories the value to set.
+     */
+    public function setCategories($categories)
+    {
+        $this->categories = $categories;
+    }
+    
+    /**
+     * Get tags.
+     *
+     * @return tags.
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+    
+    /**
+     * Set tags.
+     *
+     * @param tags the value to set.
+     */
+    public function setTags($tags)
+    {
+        $this->tags = $tags;
+    }
+    
+    /**
+     * Get section.
+     *
+     * @return section.
+     */
+    public function getSection()
+    {
+        return $this->section;
+    }
+    
+    /**
+     * Set section.
+     *
+     * @param section the value to set.
+     */
+    public function setSection($section)
+    {
+        $this->section = $section;
+    }
+    
+    /**
+     * Get seoTitle.
+     *
+     * @return seoTitle.
+     */
+    public function getSeoTitle()
+    {
+        return $this->seoTitle;
+    }
+    
+    /**
+     * Set seoTitle.
+     *
+     * @param seoTitle the value to set.
+     */
+    public function setSeoTitle($seoTitle)
+    {
+        $this->seoTitle = $seoTitle;
     }
 }
 
