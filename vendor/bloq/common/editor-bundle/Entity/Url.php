@@ -8,7 +8,7 @@ use Bloq\Common\EditorBundle\Entity\EditorialContentInterface;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="url")
+ * @ORM\Table(name="url", indexes={@ORM\Index(name="url_idx", columns={"url"})})
  */
 class Url
 {
@@ -26,10 +26,10 @@ class Url
     protected $url;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Bloq\Common\EditorBundle\Entity\EditorialContentInterface", inversedBy="urls")
-     * @ORM\JoinColumn(name="content_id", referencedColumnName="id")
+     * @ORM\Column(type="integer", nullable=false)
+     * @var integer
      */
-    protected $content;
+    protected $contentId;
 
     /**
      * @ORM\Column(type="boolean")
@@ -41,7 +41,13 @@ class Url
      * @ORM\Column(type="boolean")
      * @var boolean
      */
-    protected $primary;
+    protected $canonical;
+
+    /**
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    protected $contentType;
 
     
     /**
@@ -85,23 +91,23 @@ class Url
     }
     
     /**
-     * Get content.
+     * Get contentId.
      *
-     * @return content.
+     * @return contentId.
      */
-    public function getContent()
+    public function getContentId()
     {
-        return $this->content;
+        return $this->contentId;
     }
     
     /**
-     * Set content.
+     * Set contentId.
      *
-     * @param content the value to set.
+     * @param contentId the value to set.
      */
-    public function setContent($content)
+    public function setContentId($contentId)
     {
-        $this->content = $content;
+        $this->contentId = $contentId;
     }
     
     /**
@@ -125,23 +131,43 @@ class Url
     }
     
     /**
-     * Get primary.
+     * Get canonical.
      *
-     * @return primary.
+     * @return canonical.
      */
-    public function getPrimary()
+    public function getCanonical()
     {
-        return $this->primary;
+        return $this->canonical;
     }
     
     /**
-     * Set primary.
+     * Set canonical.
      *
-     * @param primary the value to set.
+     * @param canonical the value to set.
      */
-    public function setPrimary($primary)
+    public function setCanonical($canonical)
     {
-        $this->primary = $primary;
+        $this->canonical = $canonical;
+    }
+    
+    /**
+     * Get contentType.
+     *
+     * @return contentType.
+     */
+    public function getcontentType()
+    {
+        return $this->contentType;
+    }
+    
+    /**
+     * Set contentType.
+     *
+     * @param contentType the value to set.
+     */
+    public function setcontentType($contentType)
+    {
+        $this->contentType = $contentType;
     }
 }
 

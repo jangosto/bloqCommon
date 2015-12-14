@@ -1,9 +1,13 @@
 parameters:
+    editor.article.type: %editorial_contents.article.type%
     editor.article.entity.class: %editorial_contents.article.model_class%
     editor.article.manager.class: %editorial_contents.article.manager_class%
     editor.article.edition.form.type.class: %editorial_contents.article.form_type_class%
     editor.article.edition.form.type.name: %editorial_contents.article.form_type_name%
     editor.article.edition.form.name: editor_article_edition_form
+
+    editor.url.entity.class: Bloq\Common\EditorBundle\Entity\Url
+    editor.url.manager.class: Bloq\Common\EditorBundle\Manager\UrlManager
 
     editor.category.entity.class: Bloq\Common\EditorBundle\Entity\Category
     editor.category.manager.class: Bloq\Common\EditorBundle\Manager\CategoryManager
@@ -28,7 +32,9 @@ services:
         class: %editor.article.manager.class%
         arguments:
             - "@doctrine"
+            - %editor.article.type%
             - %editor.article.entity.class%
+            - "@editor.url.manager"
             - "@editor.category.manager"
             - "@editor.contents_categories.manager"
             - "@editor.tag.manager"
@@ -51,6 +57,14 @@ services:
             - %editor.article.edition.form.name%
             - "@editor.article.form.type"
             - null
+
+#Urls
+    editor.url.manager:
+        class: %editor.url.manager.class%
+        arguments:
+            - "@doctrine"
+            - %editor.url.entity.class%
+            - "@editor.category.manager"
 
 #Categories
     editor.category.manager:

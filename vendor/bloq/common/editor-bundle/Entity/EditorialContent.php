@@ -113,7 +113,7 @@ class EditorialContent implements EditorialContentInterface
     protected $useCategoryAsPretitle;
 
     /**
-     * @ORM\OneToMany(targetEntity="Bloq\Common\EditorBundle\Entity\Url", mappedBy="content")
+     * @var array
      */
     protected $urls;
 
@@ -158,7 +158,7 @@ class EditorialContent implements EditorialContentInterface
         $this->authors = array();
         $this->subtitles = array();
         $this->summaries = array();
-        $this->urls = new ArrayCollection();
+        $this->urls = array();
         $this->categoryIds = array();
         $this->tagIds = array();
         $this->multimedias = new ArrayCollection();
@@ -767,6 +767,26 @@ class EditorialContent implements EditorialContentInterface
     public function setSeoTitle($seoTitle)
     {
         $this->seoTitle = $seoTitle;
+    }
+    
+    /**
+     * Get type.
+     *
+     * @return type.
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+    
+    /**
+     * Set type.
+     *
+     * @param type the value to set.
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
     }
 }
 

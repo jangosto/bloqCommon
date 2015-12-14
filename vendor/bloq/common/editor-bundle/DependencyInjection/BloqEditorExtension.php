@@ -24,6 +24,7 @@ class BloqEditorExtension extends Extension
 	    $loader->load('services.yml');
 
         foreach ($config['editorial_contents'] as $editorialContentType => $editorialContentConf) {
+            $container->setParameter('editorial_contents.'.$editorialContentType.'.type', $editorialContentType);
             foreach ($editorialContentConf as $confName => $confValue) {
                 $container->setParameter('editorial_contents.'.$editorialContentType.'.'.$confName, $confValue);
             }

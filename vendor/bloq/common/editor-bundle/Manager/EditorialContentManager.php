@@ -9,6 +9,8 @@ class EditorialContentManager
 
     protected $em;
     protected $repository;
+    protected $ECType;
+    protected $urlManager;
     protected $categoryClass;
     protected $categoryManager;
     protected $ecCategoryManager;
@@ -17,7 +19,9 @@ class EditorialContentManager
 
     public function __construct(
         $doctrine,
+        $ECType,
         $class,
+        $urlManager,
         $categoryManager,
         $ecCategoryManager,
         $tagManager,
@@ -32,7 +36,9 @@ class EditorialContentManager
             $this->em = $doctrine->getManager('content');
         }
         $this->class = $class;
+        $this->ECType = $ECType;
         $this->repository = $this->em->getRepository($this->class);
+        $this->urlManager = $urlManager;
         $this->categoryManager = $categoryManager;
         $this->ecCategoryManager = $ecCategoryManager;
         $this->tagManager = $tagManager;
@@ -67,6 +73,7 @@ class EditorialContentManager
             $content = $this->setECCategories($content);
             $content = $this->setECTags($content);
             $content = $this->setSection($content);
+            $content = $this->setUrls($content);
         } else {
             $content = $contents[0];
         }
@@ -103,6 +110,10 @@ class EditorialContentManager
 
     public function saveEditorialContent($object, $andFlush = true)
     {
+        if ($object->getType() === null) {
+            $object->setType($this->ECType);
+        }
+
         $this->em->persist($object);
         if ($andFlush) {
             $this->em->flush();
@@ -201,6 +212,15 @@ class EditorialContentManager
         $section = $this->categoryManager->getById($content->getSectionId());
 
         $content->setSection($section);
+
+        return $content;
+    }
+
+    private function setUrls($content)
+    {
+        $urls = $this->urlManager->getByContentId($content->getId());
+
+        $content->setUrls($urls);
 
         return $content;
     }
