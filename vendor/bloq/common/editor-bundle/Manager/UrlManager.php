@@ -258,7 +258,7 @@ class UrlManager
 
         $result = str_replace(array("  ","   ","    ","     ")," ",$result);
         $result = trim ($result);
-        $result = str_replace(array("/","'",'"',"´",":","."," "),array("-","-","","-","","","-"),$result);
+        $result = str_replace(array("/","'",'"',"´",":","."," ",",",";"),array("-","-","","-","","","-","",""),$result);
         $result = str_replace($a,$b,$result);
         $result = str_replace(array("--","---","----","-----"),"-",$result);
         $result = strtolower($result);
