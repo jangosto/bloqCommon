@@ -129,6 +129,12 @@ class EditorialContent implements EditorialContentInterface
     protected $status;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @var integer
+     */
+    protected $outstanding;
+
+    /**
      * @ORM\Column(type="datetime", nullable=true)
      * @var datetime
      */
@@ -787,6 +793,26 @@ class EditorialContent implements EditorialContentInterface
     public function setType($type)
     {
         $this->type = $type;
+    }
+    
+    /**
+     * Get outstanding.
+     *
+     * @return outstanding.
+     */
+    public function getOutstanding()
+    {
+        return $this->outstanding;
+    }
+    
+    /**
+     * Set outstanding.
+     *
+     * @param outstanding the value to set.
+     */
+    public function setOutstanding($outstanding)
+    {
+        $this->outstanding = $outstanding;
     }
 }
 

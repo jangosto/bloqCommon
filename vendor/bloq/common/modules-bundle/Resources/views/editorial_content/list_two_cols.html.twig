@@ -1,0 +1,20 @@
+{% if contents | length > 0 %}
+<span class="area-goteo clear">
+    {% for content in contents %}
+    {%- if content.pretitle is defined and content.pretitle | length > 0 -%}
+        {%- set pretitle = content.pretitle -%}
+    {%- else -%}
+        {%- set pretitle = content.section.name -%}
+    {%- endif -%}
+    <article class="col-6">
+        <a href="{{ content.urls.0.url }}"><img src="{{ content.multimedias.0.getFrontImageUrl() | optimized('square_home_chrono_list') }}" alt="{{ content.multimedias.0.description }}"></a>
+        <span class="antetitulo">{{ pretitle }}</span>
+        <h1 class="titulo tam18"><a href="{{ content.urls.0.url }}">{{ content.title }}</a></h1>
+        <footer class="clear">
+            <a href=""><span class="icon icon-comment-outline"></span><span class="valor">8</span></a>
+            <a href=""><span class="icon icon-share"></span><span class="valor">8.4K</span></a>
+        </footer>
+    </article>
+    {% endfor %}
+</span>
+{% endif %}

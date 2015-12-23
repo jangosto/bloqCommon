@@ -1,0 +1,10 @@
+{% if contents | length > 0 %}
+<aside class="mas-noticias">
+    <h1>{{ title }}</h1>
+    <ul>
+    {% for content in contents %}
+        <li><a href="{{ app.request.getBaseURL() }}{{ content | canonicalUrl }}">{{ content.title }}</a></li>
+    {% endfor %}
+    </ul>
+</aside>
+{% endif %}

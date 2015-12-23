@@ -2,6 +2,8 @@
 
 namespace Bloq\Common\MultimediaBundle\Manager;
 
+use Bloq\Common\MultimediaBundle\Lib\Globals;
+
 class MultimediaManager
 {
     const DOCTRINE_ENTITY_MANAGER_CLASS = "Doctrine\\ORM\\EntityManager";

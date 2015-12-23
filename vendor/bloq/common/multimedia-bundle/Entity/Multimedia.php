@@ -88,6 +88,9 @@ class Multimedia
      */
     protected $htmlCode;
 
+    protected $crops = array();
+
+
     public function getOriginalImagesRootDir()
     {
         return Globals::getDomainPath().$this->getOriginalImagesUploadDir();
@@ -119,6 +122,11 @@ class Multimedia
     }
 
     public function getImageWebPath()
+    {
+        return null === $this->path ? null : Globals::getImagesRelUrl().$this->path;
+    }
+
+    public function getFrontImageUrl()
     {
         return null === $this->path ? null : Globals::getImagesRelUrl().$this->path;
     }
@@ -416,5 +424,25 @@ class Multimedia
         }
 
         return $response;
+    }
+    
+    /**
+     * Get crops.
+     *
+     * @return crops.
+     */
+    public function getCrops()
+    {
+        return $this->crops;
+    }
+    
+    /**
+     * Set crops.
+     *
+     * @param crops the value to set.
+     */
+    public function setCrops($crops)
+    {
+        $this->crops = $crops;
     }
 }

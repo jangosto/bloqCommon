@@ -20,35 +20,75 @@ class ImageCropper
         $this->cachePrefix = $cachePrefix;
     }
 
-    public function generateImageCrops($filters)
+    public function generateImageVersions($multimedia, $versions)
     {
-        $filtersArray = $this->filterManager->getFilterConfiguration()->all();
-        foreach ($filters as $filter) {
-            if (isset($filtersArray[$filter])) {
-                $destinationPath = $this->cropImage($filter);
+        foreach ($multimedia->getCrops() as $filter => $crop) {
+            if (in_array($filter, $versions)) {
+                $jsonArray = json_decode($crop);
+                $config = array(
+                    'filters' => array(
+                        'crop' => array(
+                            'start' => array($jsonArray->x, $jsonArray->y),
+                            'size' => array($jsonArray->width, $jsonArray->height)
+                        )
+                    )
+                );
+                $path = $multimedia->getOriginalImagesUploadDir().$multimedia->getPath();
+                $pathInfo = pathinfo($path);
+                $destinationPath = $this->cropImage($path, $filter, $config);
+                $destinationPathInfo = pathinfo($destinationPath);
                 $cachedImagePath = Globals::getDomainPath()."/".$this->cachePrefix."/".$filter.Globals::getOriginalImagesUploadDir().$this->image->getPath();
-
-                $imageDestinationPath = Globals::getDomainPath().$this->image->getImagesUploadDir().$destinationPath;
-                $imageDestinationPathInfo = pathinfo($imageDestinationPath);
-
-                if (!file_exists($imageDestinationPathInfo['dirname']) or !is_dir($imageDestinationPathInfo['dirname'])) {
-                    mkdir($imageDestinationPathInfo['dirname'], 0755, true);
-                }
+                $imageDestinationPath = Globals::getDomainPath().$pathInfo['dirname']."/".$destinationPathInfo['basename'];
                 copy($cachedImagePath, $imageDestinationPath);
             }
         }
     }
 
-    private function cropImage($filter)
+    public function generateImageCrops($filters)
     {
-        $path = $this->image->getOriginalImagesUploadDir().$this->image->getPath();
+        $filtersArray = $this->filterManager->getFilterConfiguration()->all();
+        foreach ($filters as $filter) {
+            if (isset($filtersArray[$filter])) {
+                $crops = array_keys($this->image->getCrops());
+                $crops[] = "";
+                foreach ($crops as $cropName) {
+                    $path = $this->image->getOriginalImagesUploadDir().$this->image->getPath();
+                    if ($cropName !== "") {
+                        $pathInfo = pathinfo($path);
+                        $path = $pathInfo['dirname']."/".$pathInfo['filename']."_".$cropName.".".$pathInfo['extension'];
+                    }
+                    $destinationPath = $this->cropImage($path, $filter);
+                    $imageInfo = pathinfo($path);
+                    $baseImagePath = $this->image->getPath();
+                    $baseImagePathInfo = pathinfo($baseImagePath);
+                    $cachedImagePath = Globals::getDomainPath()."/".$this->cachePrefix."/".$filter.Globals::getOriginalImagesUploadDir().$baseImagePathInfo['dirname']."/".$imageInfo['basename'];
 
+                    $imageDestinationPath = Globals::getDomainPath().$this->image->getImagesUploadDir().$destinationPath;
+                    $imageDestinationPathInfo = pathinfo($imageDestinationPath);
+
+                    if (!file_exists($imageDestinationPathInfo['dirname']) or !is_dir($imageDestinationPathInfo['dirname'])) {
+                        mkdir($imageDestinationPathInfo['dirname'], 0755, true);
+                    }
+                    copy($cachedImagePath, $imageDestinationPath);
+                }
+            }
+        }
+    }
+
+    private function cropImage($path, $filter, $config = null)
+    {
         $image = $this->dataManager->find($filter, $path);
-        $filteredBinary = $this->filterManager->applyFilter($image, $filter);
+        if ($config == null) {
+            $filteredBinary = $this->filterManager->applyFilter($image, $filter);
+        } else {
+            $filteredBinary = $this->filterManager->applyFilter($image, $filter, $config);
+        }
         $this->cacheManager->store($filteredBinary, $path, $filter);
 
         $imageInfo = pathinfo($path);
-        $croppedImagePath = str_replace($imageInfo['filename'], $imageInfo['filename']."_".$filter, $this->image->getPath());
+        $baseImagePath = $this->image->getPath();
+        $baseImagePathInfo = pathinfo($baseImagePath);
+        $croppedImagePath = $baseImagePathInfo['dirname']."/".$imageInfo['filename']."_".$filter.".".$imageInfo['extension'];
 
         return $croppedImagePath;
     }

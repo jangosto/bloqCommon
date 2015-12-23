@@ -55,6 +55,12 @@ class MultimediaFormType extends AbstractType
             ->add('htmlCode', 'textarea', array(
                 'label' => 'form.htmlCode',
                 'required' => false
+            ))
+            ->add('rectangle', 'text', array(
+                'property_path' => 'crops[rectangle]'
+            ))
+            ->add('square', 'text', array(
+                'property_path' => 'crops[square]'
             ));
     }
 

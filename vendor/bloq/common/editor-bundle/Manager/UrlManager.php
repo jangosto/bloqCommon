@@ -109,7 +109,8 @@ class UrlManager
     {
         $urls = $this->repository
             ->findBy(
-                array("contentId" => $contentId)
+                array("contentId" => $contentId),
+                array("canonical" => "DESC")
             );
 
         if (null === $urls || count($urls) == 0) {

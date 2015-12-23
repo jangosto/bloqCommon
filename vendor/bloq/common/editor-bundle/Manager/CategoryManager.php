@@ -152,6 +152,22 @@ class CategoryManager
         $this->save($content);
     }
 
+    public function getOutstandings()
+    {
+        $query = $this->em
+            ->createQuery(
+                "SELECT category
+                FROM ".$this->class." category
+                WHERE category.enabled = true
+                AND category.outstanding != 0
+                ORDER BY category.outstanding ASC"
+            );
+
+        $contents = $query->getResult();
+
+        return $contents;
+    }
+
     public function cleanup()
     {
         $this->em->clear();

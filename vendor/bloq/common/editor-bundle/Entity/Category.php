@@ -50,6 +50,12 @@ class Category
     protected $enabled;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @var bool
+     */
+    protected $outstanding;
+
+    /**
      * @var array
      */
     protected $children;
@@ -240,5 +246,25 @@ class Category
     public function setContentIds($contentIds)
     {
         $this->contentIds = $contentIds;
+    }
+    
+    /**
+     * Get outstanding.
+     *
+     * @return outstanding.
+     */
+    public function getOutstanding()
+    {
+        return $this->outstanding;
+    }
+    
+    /**
+     * Set outstanding.
+     *
+     * @param outstanding the value to set.
+     */
+    public function setOutstanding($outstanding)
+    {
+        $this->outstanding = $outstanding;
     }
 }

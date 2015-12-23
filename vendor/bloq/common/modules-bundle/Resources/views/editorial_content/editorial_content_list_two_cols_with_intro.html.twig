@@ -1,0 +1,12 @@
+{% if contents | length > 0 %}
+<section class="clear mas-contenido">
+    <h1 class="titulo-seccion">{{ title }}</h1>
+    {% for content in contents %}
+    <article class="medio pad">
+        <a href="{{ content.urls().0.url() }}" class="imagen"><img src="{{ content.multimedias.0.getFrontImageUrl() | optimized('rectangle_article_in_cover') }}" alt=""></a>
+        <h1 class="titulo tam24"><a href="{{ content.urls().0.url() }}">{{ content.title }}</a></h1>
+        <p class="entradilla">{{ content.intro }}</p>
+    </article>
+    {% endfor %}
+</section>
+{% endif %}

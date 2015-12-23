@@ -1,0 +1,26 @@
+{% if contents | length > 0 %}
+<span class="area-destacada clear">
+    {% for content in contents %}
+    {%- if content.pretitle is defined and content.pretitle | length > 0 -%}
+        {%- set pretitle = content.pretitle -%}
+    {%- else -%}
+        {%- set pretitle = content.section.name -%}
+    {%- endif -%}
+    <article class="col-6 calado">
+        <a href="{{ content.urls.0.url }}">
+            <img src="content.multimedias.0.getFrontImageUrl() | optimized('square_home_list_outstandings')" alt="{{ content.multimedias.0.description }}" />
+            <span class="textos">
+                <span class="antetitulo">{{ pretitle }}</span>
+                <h1 class="titulo tam24">{{ content.title }}</h1>
+                <footer class="clear">
+                    <span class="icon icon-comment-outline"></span>
+                    <span class="valor">8</span>
+                    <span class="icon icon-share"></span>
+                    <span class="valor">8.4K</span>
+                </footer>
+            </span>
+        </a>
+    </article>
+    {% endfor %}
+</span>
+{% endif %}

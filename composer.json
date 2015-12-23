@@ -8,7 +8,8 @@
             "Bloq\\Common\\EntitiesBundle\\": "vendor/bloq/common/entities-bundle",
             "Bloq\\Common\\EditorBundle\\": "vendor/bloq/common/editor-bundle",
             "Bloq\\Doctrine\\MulticonnectBundle\\": "vendor/bloq/doctrine/multiconnect-bundle",
-            "Bloq\\Common\\MultimediaBundle\\": "vendor/bloq/common/multimedia-bundle"
+            "Bloq\\Common\\MultimediaBundle\\": "vendor/bloq/common/multimedia-bundle",
+            "Bloq\\Common\\ModulesBundle\\": "vendor/bloq/common/modules-bundle"
         }
     },
     "require": {

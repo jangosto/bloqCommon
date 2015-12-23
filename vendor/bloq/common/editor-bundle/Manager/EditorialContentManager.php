@@ -150,10 +150,64 @@ class EditorialContentManager
         return $contents;
     }
 
-    public function getBySameTags($content, $strict = false, $limit = null)
+    public function getOutstandings($limit = 0, $excludedContents = array())
+    {
+        if (count($excludedContents) > 0) {
+            $excludeQuery = " AND editorial_content.id != ".implode(" AND editorial_content.id != ", $excludedContents);
+        } else {
+            $excludeQuery = "";
+        }
+
+        $query = $this->em
+            ->createQuery(
+                "SELECT editorial_content
+                FROM ".$this->class." editorial_content
+                WHERE editorial_content.status = 'published'
+                AND editorial_content.outstanding > 0"
+                .$excludeQuery.
+                " ORDER BY editorial_content.outstanding ASC"
+            );
+        if ($limit != 0) {
+            $query->setMaxResults($limit);
+        }
+    
+        $contents = $query->getResult();
+
+        return $contents;
+    }
+
+    public function getOrderedByDate($limit = 0, $excludedContents = null, $extraFilter = '')
+    {
+        if (count($excludedContents) > 0) {
+            $excludeQuery = " AND editorial_content.id != ".implode(" AND editorial_content.id != ", $excludedContents);
+        } else {
+            $excludeQuery = "";
+        }
+
+        $query = $this->em
+            ->createQuery(
+                "SELECT editorial_content
+                FROM ".$this->class." editorial_content
+                WHERE editorial_content.status = 'published'"
+                .$excludeQuery." ".$extraFilter.
+                " ORDER BY editorial_content.publishedDT DESC"
+            );
+        if ($limit != 0) {
+            $query->setMaxResults($limit);
+        }
+
+        $contents = $query->getResult();
+
+        return $contents;
+    }
+    
+    public function getBySameTags($content, $strict = false, $limit = null, $excludedContents = array())
     {
         $contentIds = $this->ecTagManager->getContentIdsByTagIds($content->getTagIds());
-        unset($contentIds[array_search($content->getId(), $contentIds)]);
+
+        foreach ($excludedContents as $excludedContentId) {
+            unset($contentIds[array_search($excludedContentId, $contentIds)]);
+        }
 
         $contents = $this->getByIds($contentIds, $limit);
 
@@ -221,6 +275,19 @@ class EditorialContentManager
         $urls = $this->urlManager->getByContentId($content->getId());
 
         $content->setUrls($urls);
+
+        return $content;
+    }
+
+    public function setDataForRepresentation($content)
+    {
+        $content = $this->setSection($content);
+        $content = $this->setUrls($content);
+        foreach ($content->getMultimedias() as $multimedia) {
+            if ($multimedia->getPosition() == "primary") {
+                $content->setMultimedias(array($multimedia));
+            }
+        }
 
         return $content;
     }
