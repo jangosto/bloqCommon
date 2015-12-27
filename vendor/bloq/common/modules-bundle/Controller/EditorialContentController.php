@@ -53,7 +53,7 @@ class EditorialContentController extends Controller
     {
         $editorialContentManager = $this->container->get('editor.editorial_content.manager');
 
-        $editorialContents = $editorialContentManager->getOrderedByDate(0, $excludedContents->toArray());
+        $editorialContents = $editorialContentManager->getOrderedByDate($limit, $excludedContents->toArray());
 
         foreach ($editorialContents as $content) {
             $content = $editorialContentManager->setDataForRepresentation($content);
