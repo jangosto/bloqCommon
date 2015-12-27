@@ -53,16 +53,21 @@ class TagManager
 
     public function getById($id)
     {
-        $content = $this->repository
+        $contents = $this->repository
             ->findBy(
                 array("id" => $id)
             );
 
-        if (null === $content) {
+        if (null === $contents || count($contents) == 0) {
             $content = null;
+        } else {
+            foreach ($contents as $content) {
+                $content->setUrl($this->getUrl($content));
+            }
+            $content = $contents[0];
         }
 
-        return $content[0];
+        return $content;
     }
 
     public function getByIds(array $ids)
@@ -82,25 +87,46 @@ class TagManager
 
         if (null === $contents) {
             $contents = array();
+        } else {
+            foreach ($contents as $content) {
+                $content->setUrl($this->getUrl($content));
+            }
         }
 
         return $contents;
     }
 
-    public function getAllByParent($id)
+    public function getBySlug($slug)
     {
-        $parentContent = $this->repository
+        $contents = $this->repository
             ->findBy(
-                array("id" => $id)
+                array("slug" => $slug)
             );
 
-        if (null === $parentContent) {
-            $content = array();
+        if (null === $contents || count($contents) == 0) {
+            $content = null;
         } else {
-            $content = $parentContent->getChildren();
+            foreach ($contents as $content) {
+                $content->setUrl($this->getUrl($content));
+            }
+            $content = $contents[0];
         }
-        
+
         return $content;
+    }
+
+    public function getAllByParent($id)
+    {
+        $contents = $this->repository
+            ->findBy(
+                array("parentId" => $id)
+            );
+
+        if (null === $contents) {
+            $contents = array();
+        }
+
+        return $contents;
     }
 
     public function save($object)
@@ -187,5 +213,17 @@ class TagManager
         }
 
         return $branch;
+    }
+
+    public function getUrl($tag)
+    {
+        if ($tag->getParentId() > 0) {
+            $parent = $this->getById($tag->getParentId());
+            $url = $this->getUrl($parent).$tag->getSlug()."/";
+        } else {
+            $url = "/".$tag->getSlug()."/";
+        }
+
+        return $url;
     }
 }

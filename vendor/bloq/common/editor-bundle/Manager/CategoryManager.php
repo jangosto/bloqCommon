@@ -327,12 +327,11 @@ class CategoryManager
     {
         if ($category->getParentId() > 0) {
             $parent = $this->getById($category->getParentId());
-            $url = $category->getSlug().$this->getUrl($parent);
-
+            $url = $this->getUrl($parent).$category->getSlug()."/";
         } else {
-            $url = $category->getSlug()."/";
+            $url = "/".$category->getSlug()."/";
         }
 
-        return "/".$url;
+        return $url;
     }
 }
