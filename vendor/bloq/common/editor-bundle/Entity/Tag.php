@@ -59,6 +59,11 @@ class Tag
      */
     protected $contentIds;
 
+    /**
+     * @var string
+     */
+    protected $url;
+
 
     public function __construct()
     {
@@ -240,5 +245,25 @@ class Tag
     public function setContentIds($contentIds)
     {
         $this->contentIds = $contentIds;
+    }
+    
+    /**
+     * Get url.
+     *
+     * @return url.
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+    
+    /**
+     * Set url.
+     *
+     * @param url the value to set.
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
     }
 }

@@ -87,6 +87,27 @@ class EditorialContentController extends Controller
         ));
     }
 
+    public function lastPublishedByTagListTwoColAction($limit = 0, $excludedContents = null, $tag = null)
+    {
+        $editorialContentManager = $this->container->get('editor.editorial_content.manager');
+
+        if ($tag != null && is_numeric($tag->getId())) {
+            $editorialContents = $editorialContentManager->getByTagIds(array($tag->getId()), $limit, $excludedContents->toArray());
+        } else {
+            $editorialContents = array();
+        }
+
+        foreach ($editorialContents as $content) {
+            $content = $editorialContentManager->setDataForRepresentation($content);
+            $excludedContents->add($content->getId());
+        }
+
+        return $this->render('BloqModulesBundle:editorial_content:list_two_cols.html.twig', array(
+            'user' => $this->getUser(),
+            'contents' => $editorialContents
+        ));
+    }
+
     public function lastPublishedBySectionFullPhotoListTwoColAction($sectionId, $limit = 0, $excludedContents = null)
     {
         $editorialContentManager = $this->container->get('editor.editorial_content.manager');
