@@ -53,16 +53,21 @@ class CategoryManager
 
     public function getById($id)
     {
-        $content = $this->repository
+        $contents = $this->repository
             ->findBy(
                 array("id" => $id)
             );
 
-        if (null === $content) {
+        if (null === $contents || count($contents) == 0) {
             $content = null;
+        } else {
+            foreach ($contents as $content) {
+                $content->setUrl($this->getUrl($content));
+            }
+            $content = $contents[0];
         }
 
-        return $content[0];
+        return $content;
     }
 
     public function getByIds(array $ids)
@@ -82,25 +87,134 @@ class CategoryManager
 
         if (null === $contents) {
             $contents = array();
+        } else {
+            foreach ($contents as $content) {
+                $content->setUrl($this->getUrl($content));
+            }
         }
 
         return $contents;
     }
 
-    public function getAllByParent($id)
+    public function getBySlug($slug)
     {
-        $parentContent = $this->repository
+        $contents = $this->repository
             ->findBy(
-                array("id" => $id)
+                array("slug" => $slug)
             );
 
-        if (null === $parentContent) {
-            $content = array();
+        if (null === $contents || count($contents) == 0) {
+            $content = null;
         } else {
-            $content = $parentContent->getChildren();
+            foreach ($contents as $content) {
+                $content->setUrl($this->getUrl($content));
+            }
+            $content = $contents[0];
+        }
+
+        return $content;
+    }
+
+    public function getAllByParent($parentId)
+    {
+        $contents = $this->repository
+            ->findBy(
+                array("parentId" => $parentId)
+            );
+
+        if (null === $contents) {
+            $contents = array();
         }
         
+        return $contents;
+    }
+
+    public function getByChild($childId)
+    {
+        $children = $this->repository
+            ->find(
+                array($childId)
+            );
+
+        if ($children[0]->getParentId() > 0){
+            $contents = $this->repository
+                ->find(
+                    array($children[0]->getParentId())
+                );
+
+            if (null === $contents) {
+                $content = null;
+            } else {
+                $content = $contents[0];
+            }
+        } else {
+            $content = null;
+        }
+
         return $content;
+    }
+
+    public function getEnabledByParent($parentId)
+    {
+        $contents = $this->em->createQuery("SELECT category FROM ".$this->class." category WHERE category.enabled = true AND category.parentId = ".$parentId)->getResult();
+
+        if (null === $contents) {
+            $contents = array();
+        }
+
+        return $contents;
+    }
+
+    public function getMenuAdded()
+    {
+        $contents = $this->em->createQuery("SELECT category FROM ".$this->class." category WHERE category.enabled = true AND category.menuPosition != 0 ORDER BY category.menuPosition")->getResult();
+
+        if (null === $contents) {
+            $contents = array();
+        } else {
+            foreach ($contents as $content) {
+                $content->setUrl($this->getUrl($content));
+            }
+        }
+
+        return $contents;
+    }
+
+    public function getOutOfMenu()
+    {
+        $contents = $this->em->createQuery("SELECT category FROM ".$this->class." category WHERE category.enabled = true AND category.menuPosition = 0 AND category.parentId = 0")->getResult();
+
+        if (null === $contents) {
+            $contents = array();
+        }
+
+        return $contents;
+    }
+
+    public function setInMenuPosition($id, $position)
+    {
+        $contents = $this->repository
+            ->findBy(
+                array('id' => $id)
+            );
+
+        if ($contents!=null and count($contents)>0) {
+            $contents[0]->setMenuPosition($position);
+            $this->save($contents[0]);
+        }
+
+        return $contents[0];
+    }
+
+    public function cleanMenu()
+    {
+        $contents = $this->getMenuAdded();
+        foreach ($contents as $content) {
+            $content->setMenuPosition(0);
+            $this->save($content);
+        }
+
+        return true;
     }
 
     public function save($object)
@@ -111,6 +225,10 @@ class CategoryManager
 
         if ($object->getParentId() === null) {
             $object->setParentId(0);
+        }
+
+        if ($object->getMenuPosition() == null) {
+            $object->setMenuPosition(0);
         }
 
         $this->em->persist($object);
@@ -203,5 +321,18 @@ class CategoryManager
         }
 
         return $branch;
+    }
+
+    public function getUrl($category)
+    {
+        if ($category->getParentId() > 0) {
+            $parent = $this->getById($category->getParentId());
+            $url = $category->getSlug().$this->getUrl($parent);
+
+        } else {
+            $url = $category->getSlug()."/";
+        }
+
+        return "/".$url;
     }
 }

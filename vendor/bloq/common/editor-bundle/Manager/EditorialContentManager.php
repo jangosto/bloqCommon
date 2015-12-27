@@ -91,9 +91,9 @@ class EditorialContentManager
             foreach ($ids as $id) {
                 $conditionArray[] .= "editorial_content.id=".$id;
             }
-            $whereQuery = " WHERE ".implode(" OR ", $conditionArray);
+            $whereQuery = " WHERE (".implode(" OR ", $conditionArray).")";
 
-            $query = $this->em->createQuery("SELECT editorial_content FROM ".$this->class." editorial_content".$whereQuery.'ORDER BY editorial_content.publishedDT DESC');
+            $query = $this->em->createQuery("SELECT editorial_content FROM ".$this->class." editorial_content".$whereQuery." AND editorial_content.status='published' ORDER BY editorial_content.publishedDT DESC");
             if ($limit !== null && is_int($limit)) {
                 $query->setMaxResults($limit);
             }
@@ -144,16 +144,30 @@ class EditorialContentManager
 
     public function getByTagIds($tagIds, $limit = null)
     {
-        $contentIds = $this->ecTagManager->getContentIdsByTagIds($content->getTagIds());
+        $contentIds = $this->ecTagManager->getContentIdsByTagIds($tagIds);
         $contents = $this->getByIds($contentIds, $limit);
 
         return $contents;
     }
 
-    public function getOutstandings($limit = 0, $excludedContents = array())
+    public function getByCategoryIds($categoryIds, $limit = null, $excludedContents = array())
+    {
+        $contentIds = $this->ecCategoryManager->getContentIdsByCategoryIds($categoryIds);
+
+        foreach ($excludedContents as $id) {
+            if (($index = array_search($id, $contentIds)) !== false) {
+                unset($contentIds[$index]);
+            }
+        }
+        $contents = $this->getByIds($contentIds, $limit);
+
+        return $contents;
+    }
+
+    public function getOutstandings($limit = 0, $excludedContents = array(), $extraFilter = "")
     {
         if (count($excludedContents) > 0) {
-            $excludeQuery = " AND editorial_content.id != ".implode(" AND editorial_content.id != ", $excludedContents);
+            $excludeQuery = " AND editorial_content.id != ".implode(" AND editorial_content.id != ", $excludedContents)." ";
         } else {
             $excludeQuery = "";
         }
@@ -163,8 +177,8 @@ class EditorialContentManager
                 "SELECT editorial_content
                 FROM ".$this->class." editorial_content
                 WHERE editorial_content.status = 'published'
-                AND editorial_content.outstanding > 0"
-                .$excludeQuery.
+                AND editorial_content.outstanding > 0 "
+                .$excludeQuery.$extraFilter.
                 " ORDER BY editorial_content.outstanding ASC"
             );
         if ($limit != 0) {

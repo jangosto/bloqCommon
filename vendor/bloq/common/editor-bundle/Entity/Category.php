@@ -56,6 +56,12 @@ class Category
     protected $outstanding;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @var bool
+     */
+    protected $menuPosition;
+
+    /**
      * @var array
      */
     protected $children;
@@ -65,6 +71,10 @@ class Category
      */
     protected $contentIds;
 
+    /**
+     * @var string
+     */
+    protected $url;
 
     public function __construct()
     {
@@ -266,5 +276,45 @@ class Category
     public function setOutstanding($outstanding)
     {
         $this->outstanding = $outstanding;
+    }
+    
+    /**
+     * Get menuPosition.
+     *
+     * @return menuPosition.
+     */
+    public function getMenuPosition()
+    {
+        return $this->menuPosition;
+    }
+    
+    /**
+     * Set menuPosition.
+     *
+     * @param menuPosition the value to set.
+     */
+    public function setMenuPosition($menuPosition)
+    {
+        $this->menuPosition = $menuPosition;
+    }
+    
+    /**
+     * Get url.
+     *
+     * @return url.
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+    
+    /**
+     * Set url.
+     *
+     * @param url the value to set.
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
     }
 }

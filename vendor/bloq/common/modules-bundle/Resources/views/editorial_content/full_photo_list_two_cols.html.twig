@@ -8,7 +8,7 @@
     {%- endif -%}
     <article class="col-6 calado">
         <a href="{{ content.urls.0.url }}">
-            <img src="content.multimedias.0.getFrontImageUrl() | optimized('square_home_list_outstandings')" alt="{{ content.multimedias.0.description }}" />
+            <img src="{{ content.multimedias.0.getFrontImageUrl() | optimized('square_home_list_outstandings') }}" alt="{{ content.multimedias.0.description }}" />
             <span class="textos">
                 <span class="antetitulo">{{ pretitle }}</span>
                 <h1 class="titulo tam24">{{ content.title }}</h1>
