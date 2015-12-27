@@ -7,7 +7,7 @@
         {%- set pretitle = content.section.name -%}
     {%- endif -%}
     <article class="col-6">
-        <a href="{{ content.urls.0.url }}"><img src="{{ content.multimedias.0.getFrontImageUrl() | optimized('square_home_chrono_list') }}" alt="{{ content.multimedias.0.description }}"></a>
+        <a href="{{ content.urls.0.url }}"><img src="{{ content.multimedias.0.getFrontImageUrl() | optimized('square_home_chrono_list') }}" alt="{% if content.multimedias.0.description is defined and content.multimedias.0.description | length > 0 %}{{ content.multimedias.0.description }}{% else %}{{ content.title }}{% endif %}"></a>
         <span class="antetitulo">{{ pretitle }}</span>
         <h1 class="titulo tam18"><a href="{{ content.urls.0.url }}">{{ content.title }}</a></h1>
         <footer class="clear">

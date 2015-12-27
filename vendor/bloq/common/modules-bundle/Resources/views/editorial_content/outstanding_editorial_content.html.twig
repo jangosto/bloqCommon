@@ -1,7 +1,7 @@
 {% if content != null %}
 <article class="calado">
     <a href="{{ content.urls.0.url }}">
-        <img src="{{ content.multimedias.0.getFrontImageUrl | optimized('rectangle_home_carousel_outstandings') }}" alt="Griezmann">
+        <img src="{{ content.multimedias.0.getFrontImageUrl | optimized('rectangle_home_carousel_outstandings') }}" alt="{% if content.multimedias.0.description is defined and content.multimedias.0.description | length > 0 %}{{ content.multimedias.0.description }}{% else %}{{ content.title }}{% endif %}">
         <span class="textos">
             <h1 class="titulo tam38">{{ content.title }}</h1>
             <footer class="clear">
