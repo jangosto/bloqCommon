@@ -114,6 +114,14 @@ class EditorialContentManager
             $object->setType($this->ECType);
         }
 
+        if ($object->getOutstanding() === null) {
+            $object->setOutstanding(0);
+        }
+
+        if ($object->getSeoTitle() === null) {
+            $object->setSeoTitle(false);
+        }
+
         $this->em->persist($object);
         if ($andFlush) {
             $this->em->flush();
