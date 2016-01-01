@@ -198,7 +198,7 @@ class CategoryManager
                 array('id' => $id)
             );
 
-        if ($contents!=null and count($contents)>0) {
+        if ($contents!=null && count($contents)>0) {
             $contents[0]->setMenuPosition($position);
             $this->save($contents[0]);
         }
