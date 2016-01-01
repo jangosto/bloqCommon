@@ -190,6 +190,46 @@ class EditorialContentManager
         return $contents;
     }
 
+    public function getNotOutstandings()
+    {
+        $contents = $this->em
+            ->createQuery(
+                "SELECT editorial_content
+                FROM ".$this->class." editorial_content
+                WHERE editorial_content.status = 'published'
+                AND editorial_content.outstanding = 0
+                ORDER BY editorial_content.publishedDT DESC"
+            )->getResult();
+
+        if ($contents==null || count($contents)<=0) {
+            $contents = array();
+        }
+
+        return $contents;
+    }
+
+    public function setInOutstandingsPosition($contentId, $position)
+    {
+        $content = $this->getById($contentId);
+        if ($content != null) {
+            $content->setOutstanding($position);
+            $this->saveEditorialContent($content);
+        }
+
+        return $content;
+    }
+
+    public function cleanOutstandings()
+    {
+        $outstandings = $this->getOutstandings();
+        foreach ($outstandings as $content) {
+            $content->setOutstanding(0);
+            $this->saveEditorialContent($content);
+        }
+
+        return true;
+    }
+
     public function getOrderedByDate($limit = 0, $excludedContents = null, $extraFilter = '')
     {
         if (count($excludedContents) > 0) {

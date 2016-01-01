@@ -36,7 +36,7 @@ class MultimediaFormType extends AbstractType
                 'label' => 'form.title',
                 'required' => false
             ))
-            ->add('description', null, array(
+            ->add('description', 'textarea', array(
                 'label' => 'form.description',
                 'required' => false
             ))
