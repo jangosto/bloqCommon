@@ -231,6 +231,10 @@ class CategoryManager
             $object->setMenuPosition(0);
         }
 
+        if ($object->getOutstanding() == null) {
+            $object->setOutstanding(0);
+        }
+
         $this->em->persist($object);
         $this->em->flush();
 
@@ -284,6 +288,43 @@ class CategoryManager
         $contents = $query->getResult();
 
         return $contents;
+    }
+
+    public function getNotOutstandings()
+    {
+        $query = $this->em
+            ->createQuery(
+                "SELECT category
+                FROM ".$this->class." category
+                WHERE category.enabled = true
+                AND category.outstanding = 0"
+            );
+
+        $contents = $query->getResult();
+
+        return $contents;
+    }
+
+    public function cleanOutstandings()
+    {
+        $outstandings = $this->getOutstandings();
+        foreach ($outstandings as $content) {
+            $content->setOutstanding(0);
+            $this->save($content);
+        }
+
+        return true;
+    }
+
+    public function setInOutstandingsPosition($contentId, $position)
+    {
+        $content = $this->getById($contentId);
+        if ($content != null) {
+            $content->setOutstanding($position);
+            $this->save($content);
+        }
+
+        return $content;
     }
 
     public function cleanup()
