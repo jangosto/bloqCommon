@@ -120,9 +120,11 @@ services:
         arguments:
             - "@doctrine"
             - %editor.contents_categories.entity.class%
+            - "@editor.category.manager"
 
     editor.contents_tags.manager:
         class: %editor.contents_tags.manager.class%
         arguments:
             - "@doctrine"
             - %editor.contents_tags.entity.class%
+            - "@editor.tag.manager"

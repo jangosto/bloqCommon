@@ -10,8 +10,9 @@ class ContentsCategoriesManager
     protected $em;
     protected $repository;
     protected $class;
+    protected $categoryManager;
 
-    public function __construct($doctrine, $class)
+    public function __construct($doctrine, $class, $categoryManager)
     {
         $doctrineServiceClass = self::DOCTRINE_SERVICE_CLASS;
         $doctrineEntityManager = self::DOCTRINE_ENTITY_MANAGER_CLASS;
@@ -23,6 +24,7 @@ class ContentsCategoriesManager
         }
         $this->class = $class;
         $this->repository = $this->em->getRepository($this->class);
+        $this->categoryManager = $categoryManager;
     }
 
     public function saveRelationships($content)
@@ -36,6 +38,15 @@ class ContentsCategoriesManager
             $categoryIds = array();
         } else {
             $categoryIds = $content->getCategoryIds();
+        }
+
+        foreach ($categoryIds as $id) {
+            $tempCategory = $this->categoryManager->getById($id);
+            while (($tempCategory = $this->categoryManager->getById($tempCategory->getParentId())) != null) {
+                if (array_search($tempCategory->getId(), $categoryIds) === false) {
+                    $categoryIds[] = $tempCategory->getId();
+                }
+            }
         }
 
         foreach ($relationships as $relationship) {

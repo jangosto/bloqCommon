@@ -10,8 +10,9 @@ class ContentsTagsManager
     protected $em;
     protected $repository;
     protected $class;
+    protected $tagManager;
 
-    public function __construct($doctrine, $class)
+    public function __construct($doctrine, $class, $tagManager)
     {
         $doctrineServiceClass = self::DOCTRINE_SERVICE_CLASS;
         $doctrineEntityManager = self::DOCTRINE_ENTITY_MANAGER_CLASS;
@@ -23,6 +24,7 @@ class ContentsTagsManager
         }
         $this->class = $class;
         $this->repository = $this->em->getRepository($this->class);
+        $this->tagManager = $tagManager;
     }
 
     public function saveRelationships($content)
@@ -36,6 +38,15 @@ class ContentsTagsManager
             $tagIds = array();
         } else {
             $tagIds = $content->getTagIds();
+        }
+
+        foreach ($tagIds as $id) {
+            $tempTag = $this->tagManager->getById($id);
+            while (($tempTag = $this->tagManager->getById($tempTag->getParentId())) != null) {
+                if (array_search($tempTag->getId(), $tagIds) === false) {
+                    $tagIds[] = $tempTag->getId();
+                }
+            }
         }
 
         foreach ($relationships as $relationship) {
