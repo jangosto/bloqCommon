@@ -140,13 +140,22 @@ class EditorialContentManager
         $this->save($content);
     }
 
-    public function getAllByStatus($status) {
-        $contents = $this->repository
-            ->findBy(
-                array("status" => $status),
-                array('createdDT' => 'DESC')
-            );
-
+    public function getAllByStatus($status, $limit = 0) {
+        if ($limit > 0) {
+            $contents = $this->repository
+                ->findBy(
+                    array("status" => $status),
+                    array('createdDT' => 'DESC'),
+                    $limit
+                );
+        } else {
+            $contents = $this->repository
+                ->findBy(
+                    array("status" => $status),
+                    array('createdDT' => 'DESC')
+                );
+        }
+    
         return $contents;
     }
 
@@ -198,16 +207,25 @@ class EditorialContentManager
         return $contents;
     }
 
-    public function getNotOutstandings()
+    public function getNotOutstandings($limit = 0, $offset = 0)
     {
-        $contents = $this->em
+        $query = $this->em
             ->createQuery(
                 "SELECT editorial_content
                 FROM ".$this->class." editorial_content
                 WHERE editorial_content.status = 'published'
                 AND editorial_content.outstanding = 0
                 ORDER BY editorial_content.publishedDT DESC"
-            )->getResult();
+            );
+
+        if ($limit != 0) {
+            $query->setMaxResults($limit);
+        }
+        if ($offset != 0) {
+            $query->setFirstResult($offset);
+        }
+
+        $contents = $query->getResult();
 
         if ($contents==null || count($contents)<=0) {
             $contents = array();
@@ -272,6 +290,33 @@ class EditorialContentManager
         }
 
         $contents = $this->getByIds($contentIds, $limit);
+
+        return $contents;
+    }
+
+    public function searchByTitle($string, $limit = 0, $offset = 0, $extraFilter = "")
+    {
+        $query = $this->em
+            ->createQuery(
+                "SELECT editorial_content
+                FROM ".$this->class." editorial_content
+                WHERE editorial_content.status = 'published' "
+                .$extraFilter.
+                " AND editorial_content.title LIKE '%".$string."%'
+                ORDER BY editorial_content.publishedDT DESC"
+            );
+        if ($limit != 0) {
+            $query->setMaxResults($limit);
+        }
+        if ($offset != 0) {
+            $query->setFirstResult($offset);
+        }
+
+        $contents = $query->getResult();
+
+        if ($contents==null || count($contents)<=0) {
+            $contents = array();
+        }
 
         return $contents;
     }
