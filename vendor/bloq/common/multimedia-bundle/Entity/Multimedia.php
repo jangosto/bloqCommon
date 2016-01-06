@@ -131,6 +131,19 @@ class Multimedia
         return null === $this->path ? null : Globals::getImagesRelUrl().$this->path;
     }
 
+    public function getVideoHtml()
+    {
+        $html = "";
+
+        if (strpos($this->htmlCode, "www.youtube.com/watch?v=") !== false) {
+            $videoArray = explode("?v=", $this->htmlCode);
+            $videoCode = end($videoArray);
+            $html = '<div style="position: relative; padding-bottom: 56.25%; padding-top: 25px; height: 0;"><iframe src="http://www.youtube.com/embed/'.$videoCode.'?autoplay=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>';
+        }
+
+        return $html;
+    }
+
     /**
      * Get id.
      *

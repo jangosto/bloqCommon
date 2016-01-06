@@ -432,7 +432,9 @@ class EditorialContent implements EditorialContentInterface
      */
     public function setText($text)
     {
-        $this->text = $text;
+        $result = preg_replace("/<p\b[^>]*>&nbsp;<\/p>/", "", $text);
+
+        $this->text = $result;
     }
     
     /**
