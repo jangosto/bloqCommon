@@ -433,6 +433,16 @@ class EditorialContent implements EditorialContentInterface
     public function setText($text)
     {
         $result = preg_replace("/<p\b[^>]*>&nbsp;<\/p>/", "", $text);
+        
+        $autoryTags = array('table');
+        foreach ($autoryTags as $tag) {
+            preg_match_all('/<'.$tag.'.*?>((.|\n|\r)*?)<\/'.$tag.'>/i', $result, $matches);
+            foreach ($matches[0] as $match) {
+                $cleaned = preg_replace(array("/<p.*?>/", "/<\/p>/"), "", $match);
+                $result = str_replace($match, $cleaned, $result);
+            }
+        }
+        $result = str_replace("\r\n", "", $result);
 
         $this->text = $result;
     }
