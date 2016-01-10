@@ -63,6 +63,9 @@ class TagManager
         } else {
             foreach ($contents as $content) {
                 $content->setUrl($this->getUrl($content));
+                if ($content->getParentId() != 0) {
+                    $content->setParent($this->getById($content->getParentId()));
+                }
             }
             $content = $contents[0];
         }

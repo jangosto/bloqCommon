@@ -64,6 +64,11 @@ class Tag
      */
     protected $url;
 
+    /**
+     * @var Tag
+     */
+    protected $parent;
+
 
     public function __construct()
     {
@@ -265,5 +270,25 @@ class Tag
     public function setUrl($url)
     {
         $this->url = $url;
+    }
+    
+    /**
+     * Get parent.
+     *
+     * @return parent.
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+    
+    /**
+     * Set parent.
+     *
+     * @param parent the value to set.
+     */
+    public function setParent($parent)
+    {
+        $this->parent = $parent;
     }
 }
