@@ -140,13 +140,14 @@ class EditorialContentManager
         $this->save($content);
     }
 
-    public function getAllByStatus($status, $limit = 0) {
+    public function getAllByStatus($status, $limit = 0, $offset = 0) {
         if ($limit > 0) {
             $contents = $this->repository
                 ->findBy(
                     array("status" => $status),
                     array('createdDT' => 'DESC'),
-                    $limit
+                    $limit,
+                    $offset
                 );
         } else {
             $contents = $this->repository
