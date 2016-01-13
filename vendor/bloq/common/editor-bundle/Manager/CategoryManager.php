@@ -157,6 +157,24 @@ class CategoryManager
         return $content;
     }
 
+    public function getDescendenceIdsByIds($ids, $onlyEnabled = true)
+    {
+        $results = array();
+        foreach ($ids as $id) {
+            if ($onlyEnabled) {
+                $childs = $this->getEnabledByParent($id);
+            } else {
+                $childs = $this->getAllByParent($id);
+            }
+            foreach ($childs as $child) {
+                $results[] = $child->getId();
+            }
+            $results = array_merge($results, $this->getDescendenceIdsByIds($results, $onlyEnabled));
+        }
+
+        return $results;
+    }
+
     public function getEnabledByParent($parentId)
     {
         $contents = $this->em->createQuery("SELECT category FROM ".$this->class." category WHERE category.enabled = true AND category.parentId = ".$parentId)->getResult();

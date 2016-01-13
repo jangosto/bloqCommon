@@ -182,6 +182,19 @@ class EditorialContentManager
         return $contents;
     }
 
+    public function getBySectionIdAndChildSectionIds($sectionId, $limitBySection = null, $excludedContents = array())
+    {
+        $sectionIds = $this->categoryManager->getDescendenceIdsByIds(array($sectionId));
+
+        $sectionIds[] = $sectionId;
+
+        $query = "AND (editorial_content.sectionId = ".implode(" OR editorial_content.sectionId = ", $sectionIds).")";
+
+        $contents = $this->getOrderedByDate($limitBySection, $excludedContents, $query);
+
+        return $contents;
+    }
+
     public function getOutstandings($limit = 0, $excludedContents = array(), $extraFilter = "")
     {
         if (count($excludedContents) > 0) {
