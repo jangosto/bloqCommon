@@ -124,20 +124,27 @@ class EditorialContentController extends Controller
         ));
     }
 
-    public function lastPublishedBySectionsFullPhotoListTwoColAction($sectionIds, $limitBySection = 1, $excludedContents = null)
+    public function lastPublishedBySectionsFullPhotoListTwoColAction($counters, $limitBySection = 1, $contentsLimit = 2)
     {
         $editorialContentManager = $this->container->get('editor.editorial_content.manager');
 
+        $remainingContents = $contentsLimit;
         $editorialContents = array();
 
-        foreach ($sectionIds as $sectionId) {
-            $results = $editorialContentManager->getBySectionIdAndChildSectionIds($sectionId, $limitBySection, $excludedContents->toArray());
-                
-            foreach ($results as $content) {
-                $content = $editorialContentManager->setDataForRepresentation($content);
-                $excludedContents->add($content->getId());
-                $editorialContents[] = $content;
+        while ($remainingContents > 0 && $counters->getOutstandingSections()->current() !== false) {
+            $results = $editorialContentManager->getBySectionIdAndChildSectionIds($counters->getOutstandingSections()->current()->getId(), $limitBySection, $counters->getUsedContents()->toArray());
+
+            if (count($results) > 0) {
+                $counter = 0;
+                while (isset($results[$counter]) && $remainingContents > 0) {
+                    $content = $editorialContentManager->setDataForRepresentation($results[$counter]);
+                    $counters->getUsedContents()->add($results[$counter]->getId());
+                    $editorialContents[] = $results[$counter];
+                    $remainingContents--;
+                    $counter++;
+                }
             }
+            $counters->getOutstandingSections()->next();
         }
 
         return $this->render('BloqModulesBundle:editorial_content:full_photo_list_two_cols.html.twig', array(
