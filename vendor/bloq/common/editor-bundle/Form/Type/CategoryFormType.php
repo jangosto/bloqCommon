@@ -34,9 +34,13 @@ class CategoryFormType extends AbstractType
                 'label' => 'form.slug',
                 'required' => true
             ))
+            ->add('metaTitle', null, array(
+                'label' => 'form.metaTitle',
+                'required' => true
+            ))
             ->add('description', 'textarea', array(
                 'label' => 'form.description',
-                'required' => false
+                'required' => true
             ))
             ->add('parentId', 'choice', array(
                 'required' => false,
