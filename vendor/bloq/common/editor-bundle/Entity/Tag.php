@@ -32,7 +32,13 @@ class Tag
     protected $slug;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    protected $metaTitle;
+
+    /**
+     * @ORM\Column(type="text")
      * @var string
      */
     protected $description;
@@ -290,5 +296,25 @@ class Tag
     public function setParent($parent)
     {
         $this->parent = $parent;
+    }
+    
+    /**
+     * Get metaTitle.
+     *
+     * @return metaTitle.
+     */
+    public function getMetaTitle()
+    {
+        return $this->metaTitle;
+    }
+    
+    /**
+     * Set metaTitle.
+     *
+     * @param metaTitle the value to set.
+     */
+    public function setMetaTitle($metaTitle)
+    {
+        $this->metaTitle = $metaTitle;
     }
 }
