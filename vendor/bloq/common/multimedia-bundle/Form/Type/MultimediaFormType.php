@@ -24,6 +24,43 @@ class MultimediaFormType extends AbstractType
     {
         $multimedia = new $this->class();
         $builder
+            ->add('type', 'choice', array(
+                'required' => true,
+                'choices' => array(
+                    'image' => 'Imagen',
+                    'video' => 'Video',
+                    'audio' => 'Audio'
+                ),
+                'multiple' => false,
+            ))
+            ->add('position', 'choice', array(
+                'required' => false,
+                'placeholder' => 'Elija una posición',
+                'choices' => array(
+                    '1' => 'Párrafo 1',
+                    '2' => 'Párrafo 2',
+                    '3' => 'Párrafo 3',
+                    '4' => 'Párrafo 4',
+                    '5' => 'Párrafo 5',
+                    '6' => 'Párrafo 6',
+                    '7' => 'Párrafo 7',
+                    '8' => 'Párrafo 8',
+                    '9' => 'Párrafo 9',
+                    '10' => 'Párrafo 10',
+                    '11' => 'Párrafo 11',
+                    '12' => 'Párrafo 12',
+                    '13' => 'Párrafo 13',
+                    '14' => 'Párrafo 14',
+                    '15' => 'Párrafo 15',
+                    '16' => 'Párrafo 16',
+                    '17' => 'Párrafo 17',
+                    '18' => 'Párrafo 18',
+                    '19' => 'Párrafo 19',
+                    '20' => 'Párrafo 20',
+                    'primary' => 'Principal'
+                ),
+                'multiple' => false,
+            ))
             ->add('file', 'file', array(
                 'label' => 'form.file',
                 'required' => false

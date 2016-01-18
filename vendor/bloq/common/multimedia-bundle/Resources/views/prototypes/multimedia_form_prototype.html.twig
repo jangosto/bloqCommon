@@ -1,0 +1,17 @@
+{% import "BloqMultimediaBundle:macros:multimedia_form.html.twig" as multimediaForm %}
+
+{{ form_label(form.type, 'Tipo de Multimedia') }}
+{{ form_errors(form.type) }}
+{{ form_widget(form.type, { 'value': type, 'attr':{ 'class':'type-selector' } }) }}
+
+{{ form_label(form.position, 'Posición') }}
+{{ form_errors(form.position) }}
+{{ form_widget(form.position, { 'attr':{ 'class':'position-selector' } }) }}
+
+{% if type == 'video' or type == 'audio' %}
+    {{ multimediaForm.videoAudioForm(form) }}
+{% elseif type == 'image' %}
+    <span class="type-specific">
+    {{ multimediaForm.imageForm(form) }}
+    </span>
+{% endif %}
