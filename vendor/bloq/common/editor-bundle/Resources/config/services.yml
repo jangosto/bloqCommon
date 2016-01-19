@@ -59,6 +59,7 @@ services:
             - "@editor.summary.form.type" 
             - "@editor.category.manager"
             - "@editor.tag.manager"
+            - "@entities.user.manager"
         tags:
             - {name: form.type, alias: %editor.article.edition.form.type.name%}
 
