@@ -6,8 +6,8 @@ parameters:
 
     multimedia.cache.root_dir.prefix.path: %multimedia.cache.root_dir.prefix.path%
 
-    multimedia.images.root_dir.path: %multimedia.images.root_dir.path%
-    multimedia.images.root_dir.url: %multimedia.images.root_dir.url%
+    #multimedia.images.root_dir.path: %multimedia.images.root_dir.path%
+    #multimedia.images.root_dir.url: %multimedia.images.root_dir.url%
 
     multimedia.images.image_cropper.class: 'Bloq\Common\MultimediaBundle\Publisher\ImageCropper'
 
@@ -30,7 +30,5 @@ services:
         class: %multimedia.multimedia.edition.form.type.class%
         arguments:
             - %multimedia.multimedia.entity.class%
-            - %multimedia.images.root_dir.path%
-            - %multimedia.images.root_dir.url%
         tags:
             - {name: form.type, alias: %multimedia.multimedia.edition.form.type.name%}

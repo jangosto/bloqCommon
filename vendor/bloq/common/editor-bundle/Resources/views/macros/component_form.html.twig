@@ -1,0 +1,13 @@
+{% macro summaryForm(form) %}
+    {{ form_label(form.position) }}
+    {{ form_errors(form.position) }}
+    {{ form_widget(form.position) }}
+
+    {{ form_label(form.text) }}
+    {{ form_errors(form.text) }}
+    {{ form_widget(form.text) }}
+{% endmacro %}
+
+{% macro existingSummaryForm(form) %}
+    {{ _self.summaryForm(form) }}
+{% endmacro %}

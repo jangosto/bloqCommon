@@ -90,8 +90,12 @@ class EditorialContent implements EditorialContentInterface
     protected $multimedias;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
-     * @var string
+     * @ORM\ManyToMany(targetEntity="Bloq\Common\EditorBundle\Entity\Components\Summary", cascade={"persist", "remove"})
+     * @ORM\JoinTable(
+     *      name="contents_summaries",
+     *      joinColumns={@ORM\JoinColumn(name="content_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="summary_id", referencedColumnName="id")}
+     *      )
      */
     protected $summaries;
 
@@ -163,7 +167,7 @@ class EditorialContent implements EditorialContentInterface
     {
         $this->authors = array();
         $this->subtitles = array();
-        $this->summaries = array();
+        $this->summaries = new ArrayCollection();
         $this->urls = array();
         $this->categoryIds = array();
         $this->tagIds = array();
@@ -194,33 +198,6 @@ class EditorialContent implements EditorialContentInterface
         if (false !== $key = array_search($subtitle, $this->subtitles, true)) {
             unset($this->subtitles[$key]);
             $this->subtitles = array_values($this->subtitles);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Add summary
-     *
-     * @param summary
-     */
-    public function addSummary($summary)
-    {
-        $this->summaries[] = $summary;
-
-        return $this;
-    }
-
-    /**
-     * Remove summary
-     *
-     * @param summary position
-     */
-    public function removeSummary($summary)
-    {
-        if (false !== $key = array_search($summary, $this->summaries, true)) {
-            unset($this->summaries[$key]);
-            $this->summaries = array_values($this->summaries);
         }
 
         return $this;
