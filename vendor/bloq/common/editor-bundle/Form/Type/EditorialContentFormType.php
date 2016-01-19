@@ -13,6 +13,7 @@ class EditorialContentFormType extends AbstractType
 {
     private $class;
     private $multimediaFormType;
+    private $summaryFormType;
     private $categoryManager;
     private $tagManager;
     private $assignedCategories;
@@ -21,10 +22,11 @@ class EditorialContentFormType extends AbstractType
 	/**
 	 * @param string $class The Article class name
 	 */
-	public function __construct($class, $multimediaFormType, $categoryManager, $tagManager)
+	public function __construct($class, $multimediaFormType, $summaryFormType, $categoryManager, $tagManager)
 	{
         $this->class = $class;
         $this->multimediaFormType = $multimediaFormType;
+        $this->summaryFormType = $summaryFormType;
         $this->categoryManager = $categoryManager;
         $this->tagManager = $tagManager;
         $this->assignedCategories = array();
@@ -75,7 +77,7 @@ class EditorialContentFormType extends AbstractType
                 )
             ))
             ->add('summaries', 'collection', array(
-                'type' => 'text',
+                'type' => $this->summaryFormType,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,

@@ -31,6 +31,12 @@ parameters:
     editor.contents_tags.entity.class: Bloq\Common\EditorBundle\Entity\ContentsTags
     editor.contents_tags.manager.class: Bloq\Common\EditorBundle\Manager\ContentsTagsManager
 
+    editor.summary.entity.class: Bloq\Common\EditorBundle\Entity\Components\Summary
+    editor.summary.manager.class: Bloq\Common\EditorBundle\Manager\Components\SummaryManager
+    editor.summary.edition.form.type.class: Bloq\Common\EditorBundle\Form\Type\Components\SummaryFormType
+    editor.summary.edition.form.type.name: editor_summary_edition
+    editor.summary.edition.form.name: editor_summary_edition_form
+
 services:
 #Article
     editor.article.manager:
@@ -50,6 +56,7 @@ services:
         arguments:
             - %editor.article.entity.class%
             - "@multimedia.multimedia.form.type"
+            - "@editor.summary.form.type" 
             - "@editor.category.manager"
             - "@editor.tag.manager"
         tags:
@@ -83,6 +90,20 @@ services:
             - "@doctrine"
             - %editor.url.entity.class%
             - "@editor.category.manager"
+
+#Summaries
+    editor.summary.manager:
+        class: %editor.summary.manager.class%
+        arguments:
+            - "@doctrine"
+            - %editor.summary.entity.class%
+
+    editor.summary.form.type:
+        class: %editor.summary.edition.form.type.class%
+        arguments:
+            - %editor.summary.entity.class%
+        tags:
+            - {name: form.type, alias: %editor.summary.edition.form.type.name%}
 
 #Categories
     editor.category.manager:

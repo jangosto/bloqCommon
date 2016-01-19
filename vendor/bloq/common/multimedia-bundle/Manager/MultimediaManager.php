@@ -55,16 +55,18 @@ class MultimediaManager
 
     public function getById($id)
     {
-        $multimedia = $this->repository
+        $multimedias = $this->repository
             ->findBy(
                 array("id" => $id)
             );
 
-        if (null === $multimedia) {
+        if (null === $multimedias) {
             $multimedia = null;
+        } else {
+            $multimedia = $multimedias[0];
         }
 
-        return $multimedia[0];
+        return $multimedia;
     }
 
     public function save($object)
