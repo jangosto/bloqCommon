@@ -66,9 +66,9 @@ class EditorialContentFormType extends AbstractType
             ))
             ->add('multimedias', 'collection', array(
                 'type' => $this->multimediaFormType,
-                'allow_add' => false,
-                'allow_delete' => false,
-                'prototype' => false,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
                 'options'  => array(
                     'required'  => false,
                     //'attr'      => array('class' => 'subtitle-box')
