@@ -162,6 +162,7 @@ class EditorialContent implements EditorialContentInterface
 
     protected $section;
 
+    protected $authorId;
 
     public function __construct()
     {
@@ -802,6 +803,26 @@ class EditorialContent implements EditorialContentInterface
     public function setOutstanding($outstanding)
     {
         $this->outstanding = $outstanding;
+    }
+    
+    /**
+     * Get authorId.
+     *
+     * @return authorId.
+     */
+    public function getAuthorId()
+    {
+        return $this->authorId;
+    }
+    
+    /**
+     * Set authorId.
+     *
+     * @param authorId the value to set.
+     */
+    public function setAuthorId($authorId)
+    {
+        $this->authorId = $authorId;
     }
 }
 

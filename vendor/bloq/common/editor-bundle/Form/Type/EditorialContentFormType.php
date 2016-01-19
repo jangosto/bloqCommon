@@ -16,19 +16,21 @@ class EditorialContentFormType extends AbstractType
     private $summaryFormType;
     private $categoryManager;
     private $tagManager;
+    private $userManager;
     private $assignedCategories;
     private $assignedTags;
 
 	/**
 	 * @param string $class The Article class name
 	 */
-	public function __construct($class, $multimediaFormType, $summaryFormType, $categoryManager, $tagManager)
+	public function __construct($class, $multimediaFormType, $summaryFormType, $categoryManager, $tagManager, $userManager)
 	{
         $this->class = $class;
         $this->multimediaFormType = $multimediaFormType;
         $this->summaryFormType = $summaryFormType;
         $this->categoryManager = $categoryManager;
         $this->tagManager = $tagManager;
+        $this->userManager = $userManager;
         $this->assignedCategories = array();
         $this->assignedTags = array();
 	}
@@ -109,6 +111,12 @@ class EditorialContentFormType extends AbstractType
                 'multiple' => true,
                 'data' => $this->assignedTags
             ))
+            ->add('authorId', 'choice', array(
+                'required' => true,
+                'choices' => $this->getUsers(),
+                'expanded' => true,
+                'multiple' => false
+            ))
             ->add('save', 'submit', array())
             ->add('publish', 'submit', array());
     }
@@ -128,6 +136,20 @@ class EditorialContentFormType extends AbstractType
         $this->getElementsArrayWithHierarchy($this->tagManager->getAllWithHierarchy(true), $tagsArray, 0, $withLevelator);
 
         return $tagsArray;
+    }
+
+    private function getUsers()
+    {
+        $usersArray = array();
+        $users = $this->userManager->findUsers();
+        
+        foreach ($users as $user) {
+            if ($user->isEnabled() == true) {
+                $usersArray[$user->getId()] = $user->getFirstName()." ".$user->getLastName();
+            }
+        }
+
+        return $usersArray;
     }
 
     private function getElementsArrayWithHierarchy($elements, &$elementsArray, $level = 0, $withLevelator = false)
