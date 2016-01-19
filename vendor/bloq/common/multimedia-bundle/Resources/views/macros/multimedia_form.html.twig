@@ -1,0 +1,87 @@
+{% macro imageForm(form) %}
+    {{ _self.imageInput(form) }}
+
+    {{ form_label(form.title, 'Título') }}
+    {{ form_errors(form.title) }}
+    {{ form_widget(form.title, { 'attr': { 'class': 'texto' } }) }}
+
+    {{ form_label(form.description, 'Descripción') }}
+    {{ form_errors(form.description) }}
+    {{ form_widget(form.description, { 'attr': { 'rows': '3' } }) }}
+
+    {{ form_label(form.author, 'Autor') }}
+    {{ form_errors(form.author) }}
+    {{ form_widget(form.author, { 'attr': { 'class': 'texto' } }) }}
+
+    {{ form_widget(form.rectangle, { 'attr':{ 'class': 'rectangle', 'hidden': 'true' } }) }}
+    {{ form_widget(form.square, { 'attr':{ 'class': 'square', 'hidden': 'true' } }) }}
+{% endmacro %}
+
+{% macro imageInputPrototype() %}
+    <label for="editor_article_edition_multimedias___name___file">Sube una imagen</label>
+    <input id="editor_article_edition_multimedias___name___file" type="file" tabindex="-1" name="editor_article_edition[multimedias][__name__][file]">
+{% endmacro %}
+
+{% macro imageInput(form) %}
+    {% if form.vars.data.path is defined and form.vars.data.path is not empty %}
+    {% set path = form.vars.data.getOriginalImagesUploadDir() ~ form.vars.data.path %}
+    <span class="caja-imagen">
+        <span class="tarjeta imagen">
+            <img alt="" src="{{ path }}">
+            <span class="botones der">
+                <a class="boton cuadrado blanco descartar remove-image" href="#">
+                    <span class="icono icon icon-eliminar"></span>
+                </a>
+            </span>
+        </span>
+        {{ form_widget(form.path, { 'attr':{ 'hidden': 'true' } }) }}
+    </span>
+    {% else %}
+    {{ form_label(form.file, "Sube una imagen") }}
+    {{ form_errors(form.file) }}
+    {{ form_widget(form.file, { 'attr':{ 'tabindex': '-1' } }) }}
+    {% endif %}
+{% endmacro %}
+
+{% macro imageControlScript(form, imageContainerClass) %}
+    <script>
+        jQuery(".descartar").click(function(){
+            if (window.confirm("¿Seguro que desea borrar la imagen?")) {
+                var $multimediaElement = jQuery(this).closest('li');
+                var fileInputPrototype = '{% spaceless %}{{ _self.imageInput(form) }}{% endspaceless %}';
+                var index = $multimediaElement.data('index');
+console.log(fileInputPrototype);
+                $multimediaElement.find(".{{ imageContainerClass }}").replaceWith(fileInputPrototype.replace(/__name__/g, index));
+
+                $multimediaElement.find("input[type='file']").jfilestyle({
+                    buttonText: "<span class='icon icon-subir'></span>"
+                });
+            }
+        });
+    </script>
+{% endmacro %}
+
+{% macro videoAudioForm(form) %}
+    {{ form_label(form.htmlCode, 'Código del reproductor de vídeo') }}
+    {{ form_errors(form.htmlCode) }}
+    {{ form_widget(form.htmlCode, { 'attr': { 'rows': '2' } }) }}
+{% endmacro %}
+
+{% macro existingMultimediaForm(form) %}
+    {% if form.vars.data.type == 'image' %}
+        <legend class="titulo tam24 cuerpo rojo-500">Imagen</legend>
+        {{ form_label(form.position, 'Posición') }}
+        {{ form_errors(form.position) }}
+        {{ form_widget(form.position, { 'attr':{ 'class':'position-selector' } }) }}
+
+        {{ _self.imageForm(form) }}
+    {% elseif form.vars.data.type == 'video' or form.vars.data.type == 'audio' %}
+        <legend class="titulo tam24 cuerpo rojo-500">Vídeo</legend>
+        {{ form_label(form.position, 'Posición') }}
+        {{ form_errors(form.position) }}
+        {{ form_widget(form.position, { 'attr':{ 'class':'position-selector' } }) }}
+
+        {{ _self.videoAudioForm(form) }}
+    {% endif %}
+    {{ form_widget(form.type, { 'attr':{ class: 'type-selector', 'hidden': 'true' } }) }}
+{% endmacro %}
