@@ -143,6 +143,8 @@ class Multimedia
             $videoArray = explode("/", $this->htmlCode);
             $videoCode = end($videoArray);
             $html = '<div style="position: relative; padding-bottom: 56.25%; padding-top: 25px; height: 0;"><iframe src="https://player.vimeo.com/video/'.$videoCode.'?color=eea1ff&badge=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>';
+        } else {
+            $html = $this->htmlCode;
         }
 
         return $html;

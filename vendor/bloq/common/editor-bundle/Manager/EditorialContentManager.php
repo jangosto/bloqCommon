@@ -314,10 +314,9 @@ class EditorialContentManager
             ->createQuery(
                 "SELECT editorial_content
                 FROM ".$this->class." editorial_content
-                WHERE editorial_content.status = 'published' "
+                WHERE editorial_content.title LIKE '%".$string."%' "
                 .$extraFilter.
-                " AND editorial_content.title LIKE '%".$string."%'
-                ORDER BY editorial_content.publishedDT DESC"
+                "ORDER BY editorial_content.publishedDT DESC"
             );
         if ($limit != 0) {
             $query->setMaxResults($limit);
