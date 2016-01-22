@@ -122,6 +122,19 @@ class EditorialContentManager
             $object->setSeoTitle(false);
         }
 
+        if ($object->getTagIds() == null) {
+            $object->setTagIds(array());
+        } else {
+            $tags = $this->tagManager->getByIds($object->getTagIds());
+            $isOfficial = false;
+            foreach ($tags as $tag) {
+                if ($tag->getSlug() == "oficial") {
+                    $isOfficial = true;
+                }
+            }
+            $object->setOfficial($isOfficial);
+        }
+
         $this->em->persist($object);
         if ($andFlush) {
             $this->em->flush();
@@ -182,13 +195,19 @@ class EditorialContentManager
         return $contents;
     }
 
-    public function getBySectionIdAndChildSectionIds($sectionId, $limitBySection = null, $excludedContents = array())
+    public function getBySectionIdAndChildSectionIds($sectionId, $limitBySection = null, $excludedContents = array(), $notOfficials = false)
     {
         $sectionIds = $this->categoryManager->getDescendenceIdsByIds(array($sectionId));
 
         $sectionIds[] = $sectionId;
 
-        $query = "AND (editorial_content.sectionId = ".implode(" OR editorial_content.sectionId = ", $sectionIds).")";
+        if ($notOfficials = true) {
+            $query = " AND editorial_content.official != true ";
+        } else {
+            $query = "";
+        }
+
+        $query .= "AND (editorial_content.sectionId = ".implode(" OR editorial_content.sectionId = ", $sectionIds).")";
 
         $contents = $this->getOrderedByDate($limitBySection, $excludedContents, $query);
 

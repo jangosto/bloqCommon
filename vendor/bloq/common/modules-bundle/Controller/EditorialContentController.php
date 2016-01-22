@@ -49,11 +49,17 @@ class EditorialContentController extends Controller
         ));
     }
 
-    public function lastPublishedListTwoColAction($limit = 0, $excludedContents = null, $category = null, $tag = null)
+    public function lastPublishedListTwoColAction($limit = 0, $excludedContents = null, $notOfficials = false)
     {
         $editorialContentManager = $this->container->get('editor.editorial_content.manager');
 
-        $editorialContents = $editorialContentManager->getOrderedByDate($limit, $excludedContents->toArray());
+        if ($notOfficials = true) {
+            $filter = " AND editorial_content.official != true";
+        } else {
+            $filter = "";
+        }
+
+        $editorialContents = $editorialContentManager->getOrderedByDate($limit, $excludedContents->toArray(), $filter);
 
         foreach ($editorialContents as $content) {
             $content = $editorialContentManager->setDataForRepresentation($content);
@@ -124,7 +130,7 @@ class EditorialContentController extends Controller
         ));
     }
 
-    public function lastPublishedBySectionsFullPhotoListTwoColAction($counters, $limitBySection = 1, $contentsLimit = 2)
+    public function lastPublishedBySectionsFullPhotoListTwoColAction($counters, $limitBySection = 1, $contentsLimit = 2, $notOfficials = false)
     {
         $editorialContentManager = $this->container->get('editor.editorial_content.manager');
 
@@ -132,7 +138,7 @@ class EditorialContentController extends Controller
         $editorialContents = array();
 
         while ($remainingContents > 0 && $counters->getOutstandingSections()->current() !== false) {
-            $results = $editorialContentManager->getBySectionIdAndChildSectionIds($counters->getOutstandingSections()->current()->getId(), $limitBySection, $counters->getUsedContents()->toArray());
+            $results = $editorialContentManager->getBySectionIdAndChildSectionIds($counters->getOutstandingSections()->current()->getId(), $limitBySection, $counters->getUsedContents()->toArray(), $notOfficials);
 
             if (count($results) > 0) {
                 $counter = 0;
@@ -234,5 +240,20 @@ class EditorialContentController extends Controller
         ));
     }
 
+    public function officialContentsZoneBListOneColAction($title = '', $limit = 0, $excludedContents = null)
+    {
+        $editorialContentManager = $this->container->get('editor.editorial_content.manager');
 
+        $editorialContents = $editorialContentManager->getOrderedByDate($limit, $excludedContents->toArray(), " AND editorial_content.official = true");
+        foreach ($editorialContents as $content) {
+            $content = $editorialContentManager->setDataForRepresentation($content);
+            $excludedContents->add($content->getId());
+        }
+
+        return $this->render('BloqModulesBundle:editorial_content:editorial_content_zone_b_list_one_col.html.twig', array(
+            'user' => $this->getUser(),
+            'title' => $title,
+            'contents' => $editorialContents,
+        ));
+    }
 }
