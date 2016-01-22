@@ -122,18 +122,18 @@ class EditorialContentManager
             $object->setSeoTitle(false);
         }
 
+        $isOfficial = false;
         if ($object->getTagIds() == null) {
             $object->setTagIds(array());
         } else {
             $tags = $this->tagManager->getByIds($object->getTagIds());
-            $isOfficial = false;
             foreach ($tags as $tag) {
                 if ($tag->getSlug() == "oficial") {
                     $isOfficial = true;
                 }
             }
-            $object->setOfficial($isOfficial);
         }
+        $object->setOfficial($isOfficial);
 
         $this->em->persist($object);
         if ($andFlush) {
