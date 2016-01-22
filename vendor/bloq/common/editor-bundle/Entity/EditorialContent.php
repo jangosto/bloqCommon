@@ -156,6 +156,12 @@ class EditorialContent implements EditorialContentInterface
      */
     protected $updatedDT;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     * @var bool
+     */
+    protected $official;
+
     protected $categories;
 
     protected $tags;
@@ -823,6 +829,34 @@ class EditorialContent implements EditorialContentInterface
     public function setAuthorId($authorId)
     {
         $this->authorId = $authorId;
+    }
+    
+    /**
+     * Get official.
+     *
+     * @return official.
+     */
+    public function getOfficial()
+    {
+        return $this->official;
+    }
+    
+    /**
+     * Set official.
+     *
+     * @param official the value to set.
+     */
+    public function setOfficial($official)
+    {
+        $this->official = $official;
+    }
+
+    /**
+     * Is official.
+     */
+    public function isOfficial()
+    {
+        return $this->official;
     }
 }
 
