@@ -1,23 +1,25 @@
 {% if contents | length > 0 %}
-<h1 class="titulo-seccion">{{ title }}</h1>
-{% for content in contents %}
-{%- if content.pretitle is defined and content.pretitle | length > 0 -%}
-    {%- set pretitle = content.pretitle -%}
-{%- else -%}
-    {%- set pretitle = content.section.name -%}
-{%- endif -%}
-<article>
-    {% if loop.first %}
-    <a href="{{ content.urls().0.url() }}" class="imagen"><img src="{{ content.multimedias.0.getFrontImageUrl() | optimized('rectangle_article_in_cover') }}" alt="{% if content.multimedias.0.description is defined and content.multimedias.0.description | length > 0 %}{{ content.multimedias.0.description }}{% else %}{{ content.title }}{% endif %}"></a>
-    {% endif %}
-    <span class="antetitulo">{{ pretitle }}</span>
-    <h1 class="titulo tam20"><a href="{{ content.urls().0.url() }}">{{ content.title }}</a></h1>
-    <footer class="clear">
-        <span class="icon icon-comment-outline"></span>
-        <span class="valor">12</span>
-        <span class="icon icon-share"></span>
-        <span class="valor">36</span>
-    </footer>
-</article>
-{% endfor %}
+<section>
+    <h1 class="titulo-seccion">{{ title }}</h1>
+    {% for content in contents %}
+    {%- if content.pretitle is defined and content.pretitle | length > 0 -%}
+        {%- set pretitle = content.pretitle -%}
+    {%- else -%}
+        {%- set pretitle = content.section.name -%}
+    {%- endif -%}
+    <article>
+        {% if loop.first %}
+        <a href="{{ content.urls().0.url() }}" class="imagen"><img src="{{ content.multimedias.0.getFrontImageUrl() | optimized('rectangle_article_in_cover') }}" alt="{% if content.multimedias.0.description is defined and content.multimedias.0.description | length > 0 %}{{ content.multimedias.0.description }}{% else %}{{ content.title }}{% endif %}"></a>
+        {% endif %}
+        <span class="antetitulo">{{ pretitle }}</span>
+        <h1 class="titulo tam20"><a href="{{ content.urls().0.url() }}">{{ content.title }}</a></h1>
+        <footer class="clear">
+            <span class="icon icon-comment-outline"></span>
+            <span class="valor">12</span>
+            <span class="icon icon-share"></span>
+            <span class="valor">36</span>
+        </footer>
+    </article>
+    {% endfor %}
+</section>
 {% endif %}
