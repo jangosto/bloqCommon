@@ -135,14 +135,24 @@ class Multimedia
     {
         $html = "";
 
-        if (strpos($this->htmlCode, "www.youtube.com/watch?v=") !== false) {
-            $videoArray = explode("?v=", $this->htmlCode);
-            $videoCode = end($videoArray);
-            $html = '<div style="position: relative; padding-bottom: 56.25%; padding-top: 25px; height: 0;"><iframe src="http://www.youtube.com/embed/'.$videoCode.'?autoplay=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>';
-        } elseif (strpos($this->htmlCode, "vimeo.com/") !== false) {
-            $videoArray = explode("/", $this->htmlCode);
-            $videoCode = end($videoArray);
-            $html = '<div style="position: relative; padding-bottom: 56.25%; padding-top: 25px; height: 0;"><iframe src="https://player.vimeo.com/video/'.$videoCode.'?color=eea1ff&badge=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>';
+        if (strpos($this->htmlCode, "<iframe ") === false) {
+            if (strpos($this->htmlCode, "www.youtube.com/watch?v=") !== false) {
+                $videoArray = explode("?v=", $this->htmlCode);
+                $videoCode = end($videoArray);
+                $html = '<div style="position: relative; padding-bottom: 56.25%; padding-top: 25px; height: 0;"><iframe src="http://www.youtube.com/embed/'.$videoCode.'?autoplay=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>';
+            } elseif (strpos($this->htmlCode, "vimeo.com/") !== false) {
+                $videoArray = explode("/", $this->htmlCode);
+                $videoCode = end($videoArray);
+                $html = '<div style="position: relative; padding-bottom: 56.25%; padding-top: 25px; height: 0;"><iframe src="https://player.vimeo.com/video/'.$videoCode.'?color=eea1ff&badge=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>';
+            } elseif (strpos($this->htmlCode, "dailymotion.com/") !== false) {
+                $a = explode("/", $this->htmlCode);
+                $fileName = end($a);
+                $b = explode("_", $fileName);
+                $videoCode = reset($b);
+                $html = '<div style="position: relative; padding-bottom: 56.25%; padding-top: 25px; height: 0;"><iframe src="//www.dailymotion.com/embed/video/'.$videoCode.'" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>';
+            } else {
+                $html = $this->htmlCode;
+            }
         } else {
             $html = $this->htmlCode;
         }
