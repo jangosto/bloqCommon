@@ -1,0 +1,36 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+    front.entity.user.class: 'Bloq\Common\EntitiesBundle\Entity\User'
+    front.entity.site.class: 'Bloq\Common\EntitiesBundle\Entity\Site'
+    front.manager.site.class: 'Bloq\Common\EntitiesBundle\Manager\SiteManager'
+    front.site_creation.form.type.class: 'Bloq\Common\EntitiesBundle\Form\Type\SiteCreationFormType'
+    front.user.creation.form.type: app_user_creation
+    front.user.creation.form.handler: app.user_creation.form.handler.default
+    front.user.creation.form.name: app_user_creation_form
+
+    front.twig_extension.multimedia.class: 'Bloq\Common\FrontBundle\Twig\FrontMultimediaExtension'
+    front.twig_extension.text_content.class: 'Bloq\Common\FrontBundle\Twig\FrontTextContentExtension'
+    front.twig_extension.editorial_content.class: 'Bloq\Common\FrontBundle\Twig\FrontEditorialContentExtension'
+#    parameter_name: value
+
+services:
+    front.twig_extension.multimedia:
+        class: %front.twig_extension.multimedia.class%
+        tags:
+            - { name: twig.extension }
+
+    front.twig_extension.text_content:
+        class: %front.twig_extension.text_content.class%
+        tags:
+            - { name: twig.extension }
+
+    front.twig_extension.editorial_content:
+        class: %front.twig_extension.editorial_content.class%
+        tags:
+            - { name: twig.extension }
+
+    twig.extensions.text:
+        class: Twig_Extensions_Extension_Text
+        tags:
+            - { name: twig.extension }
