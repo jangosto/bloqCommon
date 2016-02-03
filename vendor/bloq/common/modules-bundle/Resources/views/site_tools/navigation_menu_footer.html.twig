@@ -1,5 +1,5 @@
 <nav class="col-12 pad enlaces">
-    <a href="{{ absolute_url("front_home") }}">Portada</a>
+    <a href="{{ url("front_home") }}">Portada</a>
     {% if menu | length > 0 %}
     {% for section in menu %}
     <a href="{{ app.request.getSchemeAndHttpHost() ~ app.request.baseUrl ~ section.url }}">{{ section.name }}</a>
