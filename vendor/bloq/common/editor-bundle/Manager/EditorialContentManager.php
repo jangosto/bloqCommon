@@ -45,13 +45,22 @@ class EditorialContentManager
         $this->ecTagManager = $ecTagManager;
     }
 
-    public function getAll()
+    public function getAll($complete = false)
     {
         $contents = $this->repository
             ->findAll();
 
         if (null === $contents) {
             $contents = array();
+        } elseif ($complete == true) {
+            foreach ($contents as $key => $content) { 
+                $content = $this->setECCategoryIds($content);
+                $content = $this->setECTagIds($content);
+                $content = $this->setECCategories($content);
+                $content = $this->setECTags($content);
+                $content = $this->setSection($content);
+                $content = $this->setUrls($content);
+            }
         }
 
         return $contents;
